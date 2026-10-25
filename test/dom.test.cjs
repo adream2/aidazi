@@ -133,8 +133,8 @@ async function t(name, fn) {
     assert.ok(document.querySelector('.p-done'), '选字后应有已确认文本');
   });
 
-  console.log('\n[DOM] 完成与成绩');
-  await t('英文模式刷完一组，成绩卡出现', async () => {
+  console.log('\n[DOM] 英文模式完整输入');
+  await t('切到英文，按目标词敲完一组', async () => {
     click(document.querySelectorAll('#modeTabs .mode-tab')[0]); // 英文
     // 依次敲完所有单元（从 DOM 读目标词）
     for (let guard = 0; guard < 400; guard++) {
@@ -147,6 +147,19 @@ async function t(name, fn) {
     assert.strictEqual($('resultCard').classList.contains('hidden'), false, '成绩卡应显示');
     assert.match($('rSpeed').textContent, /wpm/);
     assert.ok(document.querySelectorAll('#rErrList li').length >= 1, '应有错误清单或零错误提示');
+  });
+  await t('代码练习可输入符号与数字', () => {
+    click($('restartBtn'));
+    const sel = $('levelSelect');
+    sel.value = 'code';
+    sel.dispatchEvent(new window.Event('change', { bubbles: true }));
+    const active = document.querySelector('#textLine .unit.active');
+    assert.ok(active, '代码模式应有单元');
+    const text = active.querySelector('.u-char').textContent;
+    assert.ok(/[^a-z ]/i.test(text) || text.length > 0, '代码单元: ' + text);
+    // 完整敲完当前单元（含符号数字）
+    (text + ' ').split('').forEach((ch) => key(ch));
+    assert.ok(document.querySelectorAll('#textLine .unit.done').length >= 1, '含符号的单元应能完成');
   });
 
   console.log('\n[DOM] 重新开始与主题');

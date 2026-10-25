@@ -324,11 +324,14 @@
     }
 
     // 直打模式
+    var m = M.modes[state.modeId];
     var key = k.length === 1 ? k.toLowerCase() : k;
-    if (state.modeId === 'strokes' && /^[1-5]$/.test(key)) {
+    if (m.id === 'strokes' && /^[1-5]$/.test(key)) {
       key = { '1': 'h', '2': 's', '3': 'p', '4': 'n', '5': 'z' }[key];
     }
-    if (/^[a-z ]$/.test(key)) {
+    // 英文模式接受全部可打印 ASCII（代码练习含符号与数字），其余模式仅字母/空格
+    var acceptable = m.id === 'english' ? /^[\x20-\x7e]$/.test(key) : /^[a-z ]$/.test(key);
+    if (acceptable) {
       e.preventDefault();
       var r = s.key(key);
       if (r) {
