@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>练 · 打字 — 拼音 / 五笔 / 双拼 / 笔画 / 英文在线打字练习</title>
+  <meta name="description" content="在线打字练习：拼音、五笔86、双拼（小鹤/微软/搜狗/智能ABC/自然码）、笔画、英文五种模式，附字根口诀、双拼键位、指法诀窍与键盘知识。纯静态，支持 Cloudflare Workers、Docker 与任意静态托管。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23b4433a'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='serif'>练</text></svg>">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#top">练<span>·打字</span></a>
+    <nav class="site-nav">
+      <a href="#practice">练习</a>
+      <a href="#knowledge">知识库</a>
+      <a href="#guide">键盘图鉴</a>
+      <a href="#deploy">部署</a>
+    </nav>
+    <button id="themeToggle" class="theme-btn" type="button">☾ 深色</button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1>把打字练成肌肉记忆</h1>
+      <p class="hero-sub">拼音 · 五笔 · 双拼 · 笔画 · 英文，五种模式一网打尽；附字根口诀、双拼键位对照、指法诀窍与键盘知识。纯静态站点，一条命令部署到 Cloudflare Workers、Docker 或任意主机。</p>
+      <div class="hero-badges">
+        <span>零依赖</span><span>无后端</span><span>Git 版本控制</span><span>数据可复现生成</span>
+      </div>
+    </section>
+
+    <!-- ================= 练习 ================= -->
+    <section id="practice" class="section">
+      <div class="mode-tabs" id="modeTabs"></div>
+      <div class="panel">
+        <div class="panel-bar">
+          <div class="opt-group" id="levelGroup"></div>
+          <div class="opt-group" id="schemeGroup"></div>
+          <div class="opt-group" id="extraGroup"></div>
+          <label class="check"><input type="checkbox" id="hintCheck" checked><span>显示提示</span></label>
+          <div class="flex-spacer"></div>
+          <button id="restartBtn" class="btn" type="button">重新开始</button>
+        </div>
+        <div class="stats-bar">
+          <div class="stat"><b id="stSpeed">0</b><span>速度</span></div>
+          <div class="stat"><b id="stAcc">100%</b><span>准确率</span></div>
+          <div class="stat"><b id="stTime">0.0s</b><span>用时</span></div>
+          <div class="stat"><b id="stProg">0%</b><span>进度</span></div>
+          <div class="stat best"><b id="stBest">--</b><span>最佳</span></div>
+        </div>
+        <div class="stage" id="stage">
+          <div class="start-hint" id="startHint">按下字母键，开始练习</div>
+          <div class="text-line" id="textLine"></div>
+          <div class="compose" id="pinyinBox" style="display:none"></div>
+          <div class="p-syls" id="pSyls" style="display:none"></div>
+          <div class="candidates" id="candidateBar" style="display:none"></div>
+          <div class="mode-msg" id="modeMsg"></div>
+        </div>
+        <div class="kb-wrap" id="kbWrap"><div id="keyboard"></div></div>
+        <p class="mode-intro" id="modeIntro"></p>
+      </div>
+      <div class="result-card hidden" id="resultCard">
+        <div class="r-head">
+          <h3>本组成绩 <span id="rNew" class="r-new" style="display:none">新纪录！</span></h3>
+          <button class="btn btn-primary" id="againBtn" type="button">再来一组</button>
+        </div>
+        <div class="r-stats">
+          <div class="stat"><b id="rSpeed">0</b><span>速度</span></div>
+          <div class="stat"><b id="rAcc">100%</b><span>准确率</span></div>
+          <div class="stat"><b id="rTime">0s</b><span>用时</span></div>
+          <div class="stat"><b id="rErrors">0</b><span>错误</span></div>
+        </div>
+        <ul class="r-err-list" id="rErrList"></ul>
+      </div>
+    </section>
+
+    <!-- ================= 知识库 ================= -->
+    <section id="knowledge" class="section">
+      <h2>知识库</h2>
+      <p class="sec-sub">口诀、规则、诀窍——练之前先看懂原理，练的时候才有方向。</p>
+      <div class="kn-tabs" id="knTabs"></div>
+      <div class="kn-body" id="knBody"></div>
+    </section>
+
+    <!-- ================= 键盘图鉴 ================= -->
+    <section id="guide" class="section">
+      <h2>键盘图鉴</h2>
+      <p class="sec-sub">配列、轴体、键帽、结构、术语——选键盘和聊天都用得上。</p>
+      <div id="guideBody"></div>
+    </section>
+
+    <!-- ================= 部署 ================= -->
+    <section id="deploy" class="section">
+      <h2>部署</h2>
+      <p class="sec-sub">纯静态站点，无后端、无构建步骤，三种姿势随你挑。</p>
+      <div class="deploy-grid" id="deployBody"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>练 · 打字 — 纯静态开源项目 · 编码数据来自公开码表（86 版五笔 / 大陆笔顺 / 拼音）· Git 版本控制</p>
+  </footer>
+
+  <script src="assets/js/data/core-data.js"></script>
+  <script src="assets/js/data/content.js"></script>
+  <script src="assets/js/engine.js"></script>
+  <script src="assets/js/keyboard.js"></script>
+  <script src="assets/js/modes.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/knowledge-view.js"></script>
+</body>
+</html>
