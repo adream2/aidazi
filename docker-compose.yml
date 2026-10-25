@@ -1,0 +1,8 @@
+services:
+  dazi:
+    build: .
+    image: lian-dazi:latest
+    container_name: lian-dazi
+    ports:
+      - "8080:80"
+    restart: unless-stopped

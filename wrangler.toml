@@ -1,0 +1,10 @@
+# Cloudflare Workers 配置
+# 纯静态站点通过 [assets] 绑定直接发布，无需编写 Worker 脚本
+# 部署：npm install && npx wrangler login && npm run deploy
+name = "lian-dazi"
+compatibility_date = "2025-10-01"
+
+[assets]
+directory = "./public"
+# 未知路径回退到 index.html（单页应用行为，锚点导航无影响）
+not_found_handling = "single-page-application"
