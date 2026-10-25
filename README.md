@@ -104,9 +104,12 @@ node scripts/gen-data.mjs <vvk数据文件> <dict_86.js> <encode1.js> [encode2.j
 ## 测试
 
 ```bash
+npm test                 # = 下面两条
 node test/engine.test.cjs    # 引擎逻辑 + 双拼编码 + 词库自洽性（26 项）
-node test/dom.test.cjs       # jsdom 全流程冒烟（10 项，需 npm install）
+node test/dom.test.cjs       # jsdom 全流程冒烟（12 项，需 npm install）
 ```
+
+视觉验证（可选）：`node scripts/shot.mjs` 会起本地服务截图并报告页面运行时错误，需要临时装 playwright（`npm i -D playwright && npx playwright install chromium`）；本机有 Edge 的也可以直接用浏览器自动化技能驱动，不装任何依赖。
 
 ## 已知边界
 
