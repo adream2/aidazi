@@ -71,6 +71,22 @@ async function t(name, fn) {
     assert.ok(document.querySelectorAll('#guideBody .guide-card').length > 30, '键盘图鉴卡片');
     assert.ok(document.querySelectorAll('#deployBody .deploy-card').length === 3, '部署卡片');
   });
+  await t('知识库五个 tab 均可切换渲染', () => {
+    const tabs = document.querySelectorAll('#knTabs .kn-tab');
+    assert.strictEqual(tabs.length, 5);
+    tabs.forEach((tab, i) => {
+      click(tab);
+      const body = $('knBody');
+      assert.ok(body.children.length > 0, 'tab ' + i + ' 应有内容');
+      assert.ok(body.textContent.length > 100, 'tab ' + i + ' 内容过少');
+    });
+    // 双拼 tab 内含虚拟键盘，指法 tab 含手指着色键盘
+    click(tabs[1]);
+    assert.ok(document.querySelector('#knBody .kb'), '双拼 tab 应渲染键盘');
+    click(tabs[4]);
+    assert.ok(document.querySelector('#knBody .kb'), '指法 tab 应渲染键盘');
+    click(tabs[0]); // 回到五笔
+  });
 
   console.log('\n[DOM] 五笔模式完整输入');
   await t('切到五笔，按提示码敲完 3 个字', () => {
