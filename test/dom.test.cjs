@@ -105,6 +105,80 @@ async function t(name, fn) {
     ['一条命令部署', 'Cloudflare Workers', 'docker compose', 'Git 版本控制']
       .forEach((t) => assert.ok(bodyText.indexOf(t) < 0, '页面不应出现: ' + t));
   });
+
+  console.log('\n[SEO / GEO]');
+  await t('基础 SEO：标题、描述、canonical、唯一 h1', () => {
+    const title = document.title;
+    assert.ok(title.length >= 10 && title.length <= 70, '标题长度应适中：' + title.length);
+    assert.ok(title.indexOf('爱打字') === 0, '标题应以品牌名开头');
+    const desc = document.querySelector('meta[name="description"]');
+    assert.ok(desc && desc.content.length >= 60, '描述应充实');
+    assert.ok(desc.content.indexOf('五笔') >= 0 && desc.content.indexOf('双拼') >= 0, '描述应含核心关键词');
+    const canonical = document.querySelector('link[rel="canonical"]');
+    assert.ok(canonical && /^https:\/\//.test(canonical.href), 'canonical 应为绝对地址');
+    assert.strictEqual(document.querySelectorAll('h1').length, 1, '页面应只有一个 h1');
+    assert.ok(document.querySelector('meta[name="robots"]').content.indexOf('index') >= 0, 'robots 应允许索引');
+  });
+  await t('社交分享：Open Graph 与 Twitter Card', () => {
+    const og = (p) => document.querySelector('meta[property="og:' + p + '"]');
+    ['title', 'description', 'url', 'image', 'type', 'site_name'].forEach((p) => {
+      assert.ok(og(p) && og(p).content, '缺少 og:' + p);
+    });
+    assert.ok(document.querySelector('meta[name="twitter:card"]').content === 'summary_large_image');
+    assert.ok(og('image').content.endsWith('og-cover.png'), 'OG 图应指向封面');
+  });
+  await t('结构化数据：WebSite + WebApplication + FAQPage 可解析', () => {
+    const el = document.querySelector('script[type="application/ld+json"]');
+    assert.ok(el, '应有 JSON-LD');
+    const data = JSON.parse(el.textContent);
+    assert.strictEqual(data['@context'], 'https://schema.org');
+    const types = data['@graph'].map((g) => g['@type']);
+    ['WebSite', 'WebApplication', 'Organization', 'FAQPage'].forEach((t) => {
+      assert.ok(types.indexOf(t) >= 0, '缺少 @type: ' + t);
+    });
+    const app = data['@graph'].find((g) => g['@type'] === 'WebApplication');
+    assert.ok(app.featureList.length >= 5, 'WebApplication 应有功能列表');
+    assert.strictEqual(app.isAccessibleForFree, true);
+    const faq = data['@graph'].find((g) => g['@type'] === 'FAQPage');
+    assert.strictEqual(faq.mainEntity.length, 6, 'FAQ 应有 6 条');
+    faq.mainEntity.forEach((q) => {
+      assert.ok(q.name && q.acceptedAnswer.text.length > 20, '问答内容应完整');
+    });
+    // 可见 FAQ 与结构化数据数量一致
+    assert.strictEqual(document.querySelectorAll('#faq .faq-item').length, faq.mainEntity.length,
+      '可见 FAQ 条数应与 JSON-LD 一致');
+  });
+  await t('GEO：关于区块含实体信息与事实清单', () => {
+    const about = document.getElementById('about');
+    assert.ok(about, '应有关于区块');
+    const text = about.textContent;
+    ['爱打字', 'aidazi', '五种', 'ZT折腾簿'].forEach((k) => {
+      assert.ok(text.indexOf(k) >= 0, '关于区块应提到: ' + k);
+    });
+    assert.ok(about.querySelectorAll('.about-facts li').length >= 6, '事实清单条目充足');
+  });
+  await t('站外入口：GitHub 仓库与主站链接可用', () => {
+    const gh = document.querySelectorAll('a[href="https://github.com/adream2/aidazi"]');
+    assert.ok(gh.length >= 2, '头部与页脚都应有仓库入口');
+    gh.forEach((a) => {
+      assert.strictEqual(a.target, '_blank', '外链应新窗口打开');
+      assert.ok(/noopener/.test(a.rel), '外链应带 rel=noopener');
+    });
+    const zt = document.querySelectorAll('a[href="https://www.ztsite.com"]');
+    assert.ok(zt.length >= 2, '头部与页脚都应有主站入口');
+  });
+  await t('SEO 文件：robots / sitemap / llms.txt 存在且有效', () => {
+    const fs2 = require('node:fs');
+    const path2 = require('node:path');
+    const pub = path2.join(__dirname, '..', 'public');
+    const robots = fs2.readFileSync(path2.join(pub, 'robots.txt'), 'utf8');
+    assert.ok(robots.indexOf('Sitemap:') >= 0, 'robots 应声明 sitemap');
+    const sitemap = fs2.readFileSync(path2.join(pub, 'sitemap.xml'), 'utf8');
+    assert.ok(sitemap.indexOf('<loc>https://') >= 0, 'sitemap 应含绝对地址');
+    const llms = fs2.readFileSync(path2.join(pub, 'llms.txt'), 'utf8');
+    assert.ok(llms.indexOf('# 爱打字') === 0, 'llms.txt 应以站点名开头');
+    assert.ok(llms.indexOf('关键事实') >= 0, 'llms.txt 应有关键事实段');
+  });
   await t('知识库五个 tab 均可切换渲染', () => {
     const tabs = document.querySelectorAll('#knTabs .kn-tab');
     assert.strictEqual(tabs.length, 5);

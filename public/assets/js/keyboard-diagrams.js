@@ -41,13 +41,13 @@
     [{ c: 'Ins' }, { c: 'Home' }, { c: 'PgUp' }],
     [{ c: 'Del' }, { c: 'End' }, { c: 'PgDn' }]
   ];
-  var ARROWS = [[{ c: '↑' }], [{ c: '←' }, { c: '↓' }, { c: '→' }]];
+  var ARROWS = [[{ c: '↑', x: 1 }], [{ c: '←', x: 0 }, { c: '↓', x: 1 }, { c: '→', x: 2 }]];
   var NUMPAD = [
     [{ c: 'Num' }, { c: '/' }, { c: '*' }, { c: '-' }],
-    [{ c: '7' }, { c: '8' }, { c: '9' }, { c: '+', h: 2 }],
+    [{ c: '7' }, { c: '8' }, { c: '9' }, { c: '+', h: 2, x: 3 }],
     [{ c: '4' }, { c: '5' }, { c: '6' }],
-    [{ c: '1' }, { c: '2' }, { c: '3' }, { c: '⏎', h: 2 }],
-    [{ c: '0', w: 2 }, { c: '.' }]
+    [{ c: '1' }, { c: '2' }, { c: '3' }, { c: '⏎', h: 2, x: 3 }],
+    [{ c: '0', w: 2, x: 0 }, { c: '.', x: 2 }]
   ];
   var SIDE_COL = [{ c: 'Home' }, { c: 'PgUp' }, { c: 'Del' }, { c: 'PgDn' }];
 
@@ -143,7 +143,7 @@
         var akeys = [];
         ARROWS.forEach(function (row, ri) {
           row.forEach(function (k, ci) {
-            var kk = { x: navX + ci, y: 3 + ri, c: k.c };
+            var kk = { x: navX + (k.x !== undefined ? k.x : ci), y: 3 + ri, c: k.c };
             akeys.push(kk);
             parts.push(keycap(PAD + kk.x * U, PAD + (kk.y + mainTop) * U, 1, 1, kk.c, { dim: true }));
           });
@@ -171,7 +171,7 @@
       var nkeys = [];
       NUMPAD.forEach(function (row, ri) {
         row.forEach(function (k, ci) {
-          var kk = { x: numX + ci, y: ri, w: k.w || 1, h: k.h || 1, c: k.c };
+          var kk = { x: numX + (k.x !== undefined ? k.x : ci), y: ri, w: k.w || 1, h: k.h || 1, c: k.c };
           nkeys.push(kk);
           parts.push(keycap(PAD + kk.x * U, PAD + (kk.y + mainTop) * U, kk.w, kk.h, kk.c, { dim: true, wide: kk.w > 1.5 }));
         });

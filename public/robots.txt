@@ -1,0 +1,5 @@
+# 爱打字 — 在线打字练习
+User-agent: *
+Allow: /
+
+Sitemap: https://adream2.github.io/aidazi/sitemap.xml

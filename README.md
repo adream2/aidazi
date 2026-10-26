@@ -1,6 +1,10 @@
 # 爱打字
 
-在线打字练习站：**拼音 / 五笔 / 双拼 / 笔画 / 英文** 五种模式，附字根口诀、双拼键位对照、指法诀窍与键盘知识。纯静态站点——无后端、无构建步骤、零运行时依赖，一条命令部署到 **Cloudflare Workers**、**Docker** 或任意静态主机。
+在线打字练习站：**拼音 / 五笔 86 / 双拼 / 笔画 / 英文** 五种模式，附字根口诀、双拼键位对照、指法诀窍与键盘图鉴。纯静态站点——无后端、无构建步骤、零运行时依赖，一条命令部署到 **Cloudflare Workers**、**Docker** 或任意静态主机。
+
+- 线上地址：<https://adream2.github.io/aidazi/>（部署到自定义域名后请替换）
+- 源码仓库：<https://github.com/adream2/aidazi>
+- 由 [ZT折腾簿](https://www.ztsite.com) 维护
 
 ## 功能
 
@@ -15,9 +19,12 @@
 - 实时统计：速度、准确率、用时、进度；按模式+难度记录本地最佳（localStorage）
 - 成绩卡：错误字 Top 清单、新纪录提示
 - 知识库：86 版字根口诀与字根表、拆分五原则、末笔识别码、简码体系、常用字编码速查（可搜索）、五套双拼方案对照、拼音/笔画诀窍、指法分区图与练习阶段
-- 键盘图鉴：配列规格（100%/TKL/75%/65%/60%…）、轴体、键帽、结构、术语、保养，**每类均配图**：配列按 1u=19.05mm 真实比例等比渲染的俯视图、MX 轴体写实剖面渲染图、键帽高度写实对比图、Gasket 结构写实示意图，以及触发压力-行程曲线图（图片已本地化在 public/assets/img，无外链依赖）
+- 键盘图鉴：8 种配列（100%/96%/TKL/75%/65%/60%/40%/分体）、轴体、键帽、结构、术语、保养，**每类均配自绘 SVG 图**
+  - 配列俯视图按 1u = 19.05mm 标准键位单位等比绘制，键位与字符完整（100% 严格 104 键），并用虚线框标出 F 区 / 主键区 / 导航区 / 方向键 / 数字区 / 编辑键列
+  - MX 轴体剖面（真实比例 + 逐件标注 + 总行程/触发行程）、键帽高度剖面、船壳与 Gasket 结构剖面对比、触发压力-行程曲线
 - 浅色「纸墨」主题 + 深色模式，中文优先排版
 - 编码数据全部来自公开码表并由脚本可复现生成（见下文）
+- SEO / GEO 已就绪：结构化数据（WebSite + WebApplication + Organization + FAQPage）、Open Graph / Twitter Card、canonical、robots.txt、sitemap.xml、llms.txt，页面含「关于」事实清单与「常见问题」区块
 
 ## 快速开始
 
@@ -111,12 +118,36 @@ node test/dom.test.cjs       # jsdom 全流程冒烟（12 项，需 npm install�
 
 视觉验证（可选）：`node scripts/shot.mjs` 会起本地服务截图并报告页面运行时错误，需要临时装 playwright（`npm i -D playwright && npx playwright install chromium`）；本机有 Edge 的也可以直接用浏览器自动化技能驱动，不装任何依赖。
 
+## SEO / GEO
+
+站点按单页结构做了搜索引擎与生成式引擎（AI 搜索）优化：
+
+| 项目 | 位置 |
+| --- | --- |
+| 标题 / 描述 / 关键词 / robots | `public/index.html` `<head>` |
+| canonical、Open Graph、Twitter Card | `public/index.html` `<head>` |
+| 结构化数据（WebSite / WebApplication / Organization / FAQPage） | `public/index.html` 内联 JSON-LD |
+| 社交分享封面（1200×630） | `public/assets/og-cover.png` |
+| 爬虫规则 | `public/robots.txt` |
+| 站点地图 | `public/sitemap.xml` |
+| AI 引擎说明（GEO） | `public/llms.txt` |
+| 实体介绍与事实清单 | 页面 `#about` 区块 |
+| FAQ（可见内容与 JSON-LD 一一对应） | 页面 `#faq` 区块 |
+
+**换域名时改这三处**：`index.html` 的 canonical / og:url / og:image / twitter:image / JSON-LD 里的 `@id` 与 `url`、`robots.txt` 与 `sitemap.xml` 里的域名、`llms.txt` 里的地址。测试会校验这些要素存在（`npm test` 中的 SEO/GEO 分组）。
+
 ## 已知边界
 
 - 五笔编码为 86 版；98/新世纪版字根有调整，未收录
 - 拼音模式候选来自单字库 + 内置词库（约 200 词），不关联任何在线智能输入法
 - 英文练习不区分大小写（按小写输入）
 - 成绩存在浏览器 localStorage，换设备不同步
+
+## 链接
+
+- 线上：<https://adream2.github.io/aidazi/>
+- 仓库：<https://github.com/adream2/aidazi>
+- 主站：<https://www.ztsite.com>（ZT折腾簿）
 
 ## License
 

@@ -3,19 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>爱打字 — 拼音 / 五笔 / 双拼 / 笔画 / 英文在线打字练习</title>
-  <meta name="description" content="爱打字：拼音、五笔86、双拼（小鹤/微软/搜狗/智能ABC/自然码）、笔画、英文五种模式在线打字练习，附字根口诀、双拼键位对照、指法诀窍与键盘图鉴。">
+
+  <!-- 站点域名：部署到自定义域名后，把下面所有 adream2.github.io/aidazi 换成你的域名 -->
+  <title>爱打字 · 在线打字练习 — 拼音/五笔86/双拼/笔画/英文五种模式</title>
+  <meta name="description" content="爱打字（aidazi）是免费的在线打字练习站：英文、拼音、五笔 86、双拼（小鹤/微软/搜狗/智能ABC/自然码）、笔画五种模式，附 86 版字根口诀与字根表、双拼键位对照、指法诀窍与键盘配列/轴体图鉴。打开即练，无需注册。">
+  <meta name="keywords" content="打字练习,在线打字,打字速度测试,五笔练习,五笔86字根口诀,双拼练习,小鹤双拼,微软双拼,搜狗双拼,智能ABC双拼,自然码双拼,拼音打字,笔画输入法,键盘图鉴,机械键盘配列">
+  <meta name="author" content="ZT折腾簿">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <meta name="theme-color" content="#faf9f7">
+  <link rel="canonical" href="https://adream2.github.io/aidazi/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="爱打字">
+  <meta property="og:title" content="爱打字 · 在线打字练习（拼音/五笔86/双拼/笔画/英文）">
+  <meta property="og:description" content="五种输入法模式的免费在线打字练习：五笔 86 字根口诀、双拼五套方案键位对照、拼音候选选字、笔画输入、英文 WPM 测试，附键盘配列与轴体图鉴。">
+  <meta property="og:url" content="https://adream2.github.io/aidazi/">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" content="https://adream2.github.io/aidazi/assets/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="爱打字 — 在线打字练习站">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="爱打字 · 在线打字练习（拼音/五笔86/双拼/笔画/英文）">
+  <meta name="twitter:description" content="五种输入法模式的免费在线打字练习，附字根口诀、双拼键位对照与键盘图鉴。">
+  <meta name="twitter:image" content="https://adream2.github.io/aidazi/assets/og-cover.png">
+
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23b4433a'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='serif'>爱</text></svg>">
   <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- 结构化数据：WebSite + WebApplication + FAQPage（与页面可见内容一致） -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://adream2.github.io/aidazi/#website",
+        "url": "https://adream2.github.io/aidazi/",
+        "name": "爱打字",
+        "alternateName": "aidazi",
+        "inLanguage": "zh-CN",
+        "publisher": { "@id": "https://adream2.github.io/aidazi/#author" }
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://adream2.github.io/aidazi/#app",
+        "name": "爱打字",
+        "url": "https://adream2.github.io/aidazi/",
+        "description": "免费的在线打字练习站，提供英文、拼音、五笔 86、双拼（5 套方案）、笔画五种练习模式，并附字根口诀、双拼键位对照、指法诀窍与键盘图鉴。",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web Browser (Chrome / Edge / Safari / Firefox)",
+        "browserRequirements": "支持 ES5 的现代浏览器",
+        "inLanguage": "zh-CN",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+        "featureList": [
+          "英文打字练习（单词 / 名言 / 代码，显示 WPM）",
+          "拼音打字练习（真实输入法流程，候选选字）",
+          "五笔 86 练习（最简码与全码，1200 常用字）",
+          "双拼练习（小鹤 / 微软 / 搜狗 / 智能ABC / 自然码）",
+          "笔画输入练习（横竖撇捺折，565 常用字）",
+          "86 版字根口诀与字根表、双拼键位对照、指法诀窍",
+          "键盘配列、轴体、键帽与结构图鉴（自绘 SVG）"
+        ],
+        "author": { "@id": "https://adream2.github.io/aidazi/#author" },
+        "sameAs": ["https://github.com/adream2/aidazi"]
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://adream2.github.io/aidazi/#author",
+        "name": "ZT折腾簿",
+        "url": "https://www.ztsite.com",
+        "sameAs": ["https://www.ztsite.com", "https://github.com/adream2"]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://adream2.github.io/aidazi/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "爱打字是什么？需要付费或注册吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "爱打字是一个免费的在线打字练习站，提供英文、拼音、五笔 86、双拼、笔画五种练习模式，并附字根口诀、键位对照与键盘图鉴。不需要注册、不需要安装，打开网页即可练习。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "支持哪些双拼方案？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "支持小鹤双拼、微软双拼、搜狗双拼、智能ABC双拼、自然码双拼五套方案。练习时虚拟键盘会实时显示当前方案的声母/韵母键位，并高亮下一个待按键。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "五笔练习是哪个版本？编码准确吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "使用 86 版五笔。默认按最简码输入（与真实输入法一致），可切换全码练习。编码来自公开的 86 版码表，收录 1200 个常用字，并与码表交叉校验。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "笔画输入法怎么操作？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "五种基本笔画对应：横 = 1 或 h、竖 = 2 或 s、撇 = 3 或 p、捺 = 4 或 n、折 = 5 或 z。按汉字的规范笔顺依次敲击即可，例如「十」= 横竖 = hs，「人」= 撇捺 = pn。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "练习成绩保存在哪里？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "成绩（速度、准确率、各组最佳记录）保存在浏览器的 localStorage 中，不会上传服务器；换浏览器或换设备不会同步。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "拼音模式的流程和真实输入法一样吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "一样。输入拼音后出现候选栏（词优先、单字随后），用空格或数字键选字上屏；拼音没输完就选字、或选错候选都会判错并提示，用来练习「见字打词」的整句手感。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="#top">爱<span>打字</span></a>
-    <nav class="site-nav">
+    <a class="logo" href="#top" aria-label="爱打字 首页">爱<span>打字</span></a>
+    <nav class="site-nav" aria-label="站内导航">
       <a href="#practice">练习</a>
       <a href="#knowledge">知识库</a>
       <a href="#guide">键盘图鉴</a>
+      <a href="#faq">常见问题</a>
     </nav>
+    <div class="site-actions">
+      <a class="site-link" href="https://www.ztsite.com" target="_blank" rel="noopener">ZT折腾簿</a>
+      <a class="gh-btn" href="https://github.com/adream2/aidazi" target="_blank" rel="noopener" aria-label="GitHub 仓库" title="GitHub 仓库">
+        <svg viewBox="0 0 16 16" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+      </a>
+    </div>
     <button id="themeToggle" class="theme-btn" type="button">☾ 深色</button>
   </header>
 
@@ -88,10 +224,67 @@
       <div id="guideBody"></div>
     </section>
 
-    <!-- ================= 部署 ================= -->
+    <!-- ================= 关于 ================= -->
+    <section id="about" class="section">
+      <h2>关于爱打字</h2>
+      <p class="sec-sub">一个纯前端的打字练习工具，做给自己用，也顺手开源出来。</p>
+      <div class="about-card">
+        <p><strong>爱打字</strong>（aidazi）是一个免费的在线打字练习站，覆盖中文与英文两类需求：英文练习看 WPM（每分钟词数），中文练习提供<strong>拼音、五笔 86、双拼、笔画</strong>四种输入路径，其中双拼包含小鹤、微软、搜狗、智能ABC、自然码五套方案。除练习本身外，站点还整理了 86 版五笔字根口诀与字根表、双拼键位对照、指法分区与练习阶段、键盘配列与轴体图鉴等资料，方便边练边查。</p>
+        <p>站点为纯静态页面，没有账号体系：不需要注册、不收集输入内容，练习成绩只保存在你自己的浏览器里。五笔编码与笔顺数据来自公开码表，由构建脚本生成；双拼键位经各方案公开文档核对。项目由 <a href="https://www.ztsite.com" target="_blank" rel="noopener">ZT折腾簿</a> 维护，源码在 <a href="https://github.com/adream2/aidazi" target="_blank" rel="noopener">GitHub</a> 上开放，欢迎提 issue 或 PR。</p>
+        <ul class="about-facts">
+          <li><b>五种模式</b>英文 / 拼音 / 五笔 86 / 双拼 / 笔画</li>
+          <li><b>五套双拼</b>小鹤 · 微软 · 搜狗 · 智能ABC · 自然码</li>
+          <li><b>五笔字数</b>1200 个常用字，最简码 + 全码</li>
+          <li><b>笔画字数</b>565 个常用字，按画数分级</li>
+          <li><b>数据记录</b>成绩存浏览器本地，不上传</li>
+          <li><b>使用成本</b>免费，无需注册与安装</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= 常见问题 ================= -->
+    <section id="faq" class="section">
+      <h2>常见问题</h2>
+      <p class="sec-sub">第一次用之前，通常想知道这几件事。</p>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>爱打字是什么？需要付费或注册吗？</h3>
+          <p>爱打字是一个免费的在线打字练习站，提供英文、拼音、五笔 86、双拼、笔画五种练习模式，并附字根口诀、键位对照与键盘图鉴。不需要注册、不需要安装，打开网页即可练习。</p>
+        </div>
+        <div class="faq-item">
+          <h3>支持哪些双拼方案？</h3>
+          <p>支持小鹤双拼、微软双拼、搜狗双拼、智能ABC双拼、自然码双拼五套方案。练习时虚拟键盘会实时显示当前方案的声母/韵母键位，并高亮下一个待按键。</p>
+        </div>
+        <div class="faq-item">
+          <h3>五笔练习是哪个版本？编码准确吗？</h3>
+          <p>使用 86 版五笔。默认按最简码输入（与真实输入法一致），可切换全码练习。编码来自公开的 86 版码表，收录 1200 个常用字，并与码表交叉校验。</p>
+        </div>
+        <div class="faq-item">
+          <h3>笔画输入法怎么操作？</h3>
+          <p>五种基本笔画对应：横 = 1 或 h、竖 = 2 或 s、撇 = 3 或 p、捺 = 4 或 n、折 = 5 或 z。按汉字的规范笔顺依次敲击即可，例如「十」= 横竖 = hs，「人」= 撇捺 = pn。</p>
+        </div>
+        <div class="faq-item">
+          <h3>练习成绩保存在哪里？</h3>
+          <p>成绩（速度、准确率、各组最佳记录）保存在浏览器的 localStorage 中，不会上传服务器；换浏览器或换设备不会同步。</p>
+        </div>
+        <div class="faq-item">
+          <h3>拼音模式的流程和真实输入法一样吗？</h3>
+          <p>一样。输入拼音后出现候选栏（词优先、单字随后），用空格或数字键选字上屏；拼音没输完就选字、或选错候选都会判错并提示，用来练习「见字打词」的整句手感。</p>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
+    <div class="footer-links">
+      <a href="https://www.ztsite.com" target="_blank" rel="noopener">ZT折腾簿 · www.ztsite.com</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/adream2/aidazi" target="_blank" rel="noopener">GitHub 仓库</a>
+      <span aria-hidden="true">·</span>
+      <a href="#about">关于爱打字</a>
+      <span aria-hidden="true">·</span>
+      <a href="#faq">常见问题</a>
+    </div>
     <p>爱打字 · 把打字练成肌肉记忆</p>
   </footer>
 
