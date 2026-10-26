@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "description": "爱打字 — 拼音/五笔/双拼/笔画/英文在线打字练习，纯静态站点，支持 Cloudflare Workers / Docker / 任意静态托管",
+  "license": "MIT",
+  "author": "ZT折腾簿 (https://www.ztsite.com)",
+  "homepage": "https://adream2.github.io/aidazi/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adream2/aidazi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adream2/aidazi/issues"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
