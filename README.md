@@ -2,7 +2,7 @@
 
 在线打字练习站：**拼音 / 五笔 86 / 双拼 / 笔画 / 英文** 五种模式，附字根口诀、双拼键位对照、指法诀窍与键盘图鉴。纯静态站点——无后端、无构建步骤、零运行时依赖，一条命令部署到 **Cloudflare Workers**、**Docker** 或任意静态主机。
 
-- 线上地址：<https://adream2.github.io/aidazi/>（部署到自定义域名后请替换）
+- 线上地址：<https://adream2.github.io/aidazi/>（GitHub Pages，托管 `public/` 目录）
 - 源码仓库：<https://github.com/adream2/aidazi>
 - 由 [ZT折腾簿](https://www.ztsite.com) 维护
 
@@ -60,9 +60,13 @@ docker run -d -p 8080:80 ai-da-zi
 
 基于 `nginx:alpine`，gzip + 静态资源缓存 + 单页回退，镜像约 20MB。
 
-### 3. 静态托管（任意主机）
+### 3. GitHub Pages（已启用）
 
-把 `public/` 目录上传到任何静态托管即可：Nginx / OSS / COS / GitHub Pages / Vercel / Netlify。推送到 `main` 分支会自动触发 GitHub Actions 发布到 Pages（见 `.github/workflows/deploy-pages.yml`，需在仓库 Settings → Pages 选择 GitHub Actions 源）。
+推送到 `main` 即自动部署：`.github/workflows/deploy-pages.yml` 会把 `public/` 打成 artifact 交给 Pages。仓库需在 **Settings → Pages → Build and deployment** 选择 **GitHub Actions**（本项目已配置好，`build_type=workflow`）。线上地址：<https://adream2.github.io/aidazi/>
+
+### 4. 其他静态托管
+
+把 `public/` 目录上传到任何静态托管即可：Nginx / OSS / COS / Vercel / Netlify / Cloudflare Pages。
 
 ## 项目结构
 
