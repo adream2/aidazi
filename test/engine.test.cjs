@@ -88,7 +88,13 @@ t('词未输完时选字判错', () => {
   'ni'.split('').forEach((ch) => s.letter(ch));
   const r = s.select(0);
   assert.strictEqual(r.ok, false);
-  assert.match(r.reason, /还没输完/);
+  assert.match(r.reason, /请先输完/);
+});
+t('前缀候选：输入部分拼音也能联想出候选', () => {
+  const s = E.createPinyinSession([{ w: '你好', syl: ['ni', 'hao'] }], dict);
+  s.letter('n');
+  assert.ok(s.candidates.length > 0, '输入 n 应有联想候选');
+  assert.ok(s.candidates.some((c) => c === '你好'), '联想候选应包含目标词');
 });
 t('错误字母计错但可退格', () => {
   const s = E.createPinyinSession([{ w: '你好', syl: ['ni', 'hao'] }], dict);

@@ -267,6 +267,15 @@
   }
 
   /* ==================== 键盘图鉴 ==================== */
+  function diagramFor(item) {
+    var D = root.DAZI_DIAGRAMS;
+    if (!D || !item || !item.dg) return '';
+    if (item.dg.type === 'layout') return D.layout(item.dg.spec);
+    if (item.dg.type === 'split') return D.split();
+    if (item.dg.type === 'switch') return D.switch(item.dg.stem, item.dg.tone);
+    return '';
+  }
+
   function renderGuide() {
     var g = C.keyboardGuide, wrap = $('guideBody');
     wrap.innerHTML = '';
@@ -285,12 +294,49 @@
       gr.items.forEach(function (it) {
         var card = el('div', 'guide-card');
         var meta = (it.type || it.force) ? '<div class="g-meta">' + [it.type, it.force, it.travel].filter(Boolean).map(esc).join(' · ') + '</div>' : '';
-        card.innerHTML = '<b>' + esc(it.name) + '</b>' + meta + '<p>' + esc(it.desc) + '</p>';
+        card.innerHTML = '<b>' + esc(it.name) + '</b>' + meta + '<div class="dg-holder"></div><p>' + esc(it.desc) + '</p>';
+        var dg = diagramFor(it);
+        if (dg) card.querySelector('.dg-holder').innerHTML = dg;
         grid.appendChild(card);
       });
       sec.appendChild(grid);
       wrap.appendChild(sec);
     });
+
+    // 专题图表：手感曲线 / 键帽剖面 / 结构剖面
+    var D = root.DAZI_DIAGRAMS;
+    if (D) {
+      var d1 = el('section', 'guide-sec');
+      d1.appendChild(el('h3', null, esc(g.diagrams.forceCurve.title)));
+      var c1 = el('div', 'guide-card guide-card-wide');
+      c1.innerHTML = '<b>触发压力 × 按键行程</b><p>' + esc(g.diagrams.forceCurve.desc) + '</p>';
+      c1.insertAdjacentHTML('beforeend', D.forceCurve());
+      d1.appendChild(c1);
+      wrap.appendChild(d1);
+
+      var d2 = el('section', 'guide-sec');
+      d2.appendChild(el('h3', null, esc(g.diagrams.keycapProfile.title)));
+      var c2 = el('div', 'guide-card guide-card-wide');
+      c2.innerHTML = '<b>常见键帽高度</b><p>' + esc(g.diagrams.keycapProfile.desc) + '</p>';
+      c2.insertAdjacentHTML('beforeend', D.keycapProfile());
+      d2.appendChild(c2);
+      wrap.appendChild(d2);
+
+      var d3 = el('section', 'guide-sec');
+      d3.appendChild(el('h3', null, esc(g.diagrams.structure.title)));
+      var row = el('div', 'guide-grid guide-grid-2');
+      var c3 = el('div', 'guide-card');
+      c3.innerHTML = '<b>船壳 / 托盘</b><p>外壳与顶盖承力，定位板用螺钉固定，回弹干脆、声音清脆。</p>';
+      c3.insertAdjacentHTML('beforeend', D.structure('tray'));
+      row.appendChild(c3);
+      var c4 = el('div', 'guide-card');
+      c4.innerHTML = '<b>Gasket 垫片悬挂</b><p>内胆与外壳之间垫硅胶垫片，敲击软弹、声音更沉，现在的主流结构。</p>';
+      c4.insertAdjacentHTML('beforeend', D.structure('gasket'));
+      row.appendChild(c4);
+      d3.appendChild(row);
+      wrap.appendChild(d3);
+    }
+
     var care = el('section', 'guide-sec');
     care.appendChild(el('h3', null, '保养与避坑'));
     var ul = el('ul', 'kn-tips');

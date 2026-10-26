@@ -222,6 +222,24 @@
     return dict;
   }
 
-  root.DAZI_MODES = { modes: modes, wordSyllables: wordSyllables, charPy: charPy, buildPinyinDict: buildPinyinDict };
+  /** 为一次练习生成候选字典：保证每个目标词的完整拼音下，该词一定在候选首位 */
+  function pinyinDictFor(phrases) {
+    var dict = buildPinyinDict();
+    (phrases || []).forEach(function (p) {
+      if (!p || !p.syl || !p.syl.length) return;
+      var key = p.syl.join('');
+      dict[key] = dict[key] || [];
+      if (dict[key].indexOf(p.w) < 0) dict[key].unshift(p.w);
+    });
+    return dict;
+  }
+
+  root.DAZI_MODES = {
+    modes: modes,
+    wordSyllables: wordSyllables,
+    charPy: charPy,
+    buildPinyinDict: buildPinyinDict,
+    pinyinDictFor: pinyinDictFor
+  };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.DAZI_MODES;
 })(typeof window !== 'undefined' ? window : globalThis);

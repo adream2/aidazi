@@ -380,22 +380,22 @@ window.DAZI_CONTENT = (function () {
   /* ==================== 键盘图鉴 ==================== */
   var keyboardGuide = {
     layouts: [
-      { name: '100% / 104 键', desc: '全尺寸带数字区，财务、数据录入效率最高，占地最大' },
-      { name: '96%', desc: '压缩了功能区间隙，保留数字区，体积接近 87 键' },
-      { name: 'TKL / 87 键', desc: '砍掉数字区，游戏玩家标配，给鼠标留出大片空间' },
-      { name: '75%', desc: '保留 F 区和方向键，砍掉编辑区间隙，小巧与功能平衡' },
-      { name: '65%', desc: '砍掉 F 区和方向键（用组合键），桌面极简党最爱' },
-      { name: '60%', desc: '最紧凑的常用配列，~ 都要用组合键，便携之王' },
-      { name: '40% 及以下', desc: '没有数字行，极客玩具，日常使用门槛高' },
-      { name: '分体式 / Alice', desc: '左右分开或弧形倾斜，符合人体肩宽与手腕自然角度' }
+      { name: '100% / 104 键', desc: '全尺寸带数字区，财务、数据录入效率最高，占地最大', dg: { type: 'layout', spec: { f: 1, nav: 1, num: 1 } } },
+      { name: '96%', desc: '压缩了功能区间隙，保留数字区，体积接近 87 键', dg: { type: 'layout', spec: { nav: 1, num: 1 } } },
+      { name: 'TKL / 87 键', desc: '砍掉数字区，游戏玩家标配，给鼠标留出大片空间', dg: { type: 'layout', spec: { f: 1, nav: 1 } } },
+      { name: '75%', desc: '保留 F 区和方向键，砍掉编辑区间隙，小巧与功能平衡', dg: { type: 'layout', spec: { f: 1, arrow: 1 } } },
+      { name: '65%', desc: '砍掉 F 区和方向键（用组合键），桌面极简党最爱', dg: { type: 'layout', spec: { arrow: 1 } } },
+      { name: '60%', desc: '最紧凑的常用配列，~ 都要用组合键，便携之王', dg: { type: 'layout', spec: {} } },
+      { name: '40% 及以下', desc: '没有数字行，极客玩具，日常使用门槛高', dg: { type: 'layout', spec: { rows: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2], [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5], [1.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.25], [2.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.75]] } } },
+      { name: '分体式 / Alice', desc: '左右分开或弧形倾斜，符合人体肩宽与手腕自然角度', dg: { type: 'split' } }
     ],
     switches: [
-      { name: '青轴', type: '段落轴', force: '50g', travel: '4.0mm', desc: '段落感清脆有声，「打字机」手感，办公室慎用' },
-      { name: '茶轴', type: '段落轴', force: '55g', travel: '4.0mm', desc: '轻微段落感，声音较小，被称为「万能轴」' },
-      { name: '红轴', type: '线性轴', force: '45g', travel: '4.0mm', desc: '直上直下压力轻，游戏和长时间打字都合适' },
-      { name: '黑轴', type: '线性轴', force: '60g', travel: '4.0mm', desc: '压力克数大，回弹猛，手劲大者适用' },
-      { name: '银轴', type: '线性轴', force: '45g', travel: '3.4mm', desc: '触发行程短触发快，电竞向，误触率略高' },
-      { name: '静音红/静音月白', type: '线性/段落', force: '45g', travel: '3.5mm', desc: '加硅胶降噪，图书馆/卧室友好' }
+      { name: '青轴', type: '段落轴', force: '50g', travel: '4.0mm', desc: '段落感清脆有声，「打字机」手感，办公室慎用', dg: { type: 'switch', stem: '#3d7ea6', tone: 'click' } },
+      { name: '茶轴', type: '段落轴', force: '55g', travel: '4.0mm', desc: '轻微段落感，声音较小，被称为「万能轴」', dg: { type: 'switch', stem: '#8a5a34', tone: 'tactile' } },
+      { name: '红轴', type: '线性轴', force: '45g', travel: '4.0mm', desc: '直上直下压力轻，游戏和长时间打字都合适', dg: { type: 'switch', stem: '#b4413a', tone: 'linear' } },
+      { name: '黑轴', type: '线性轴', force: '60g', travel: '4.0mm', desc: '压力克数大，回弹猛，手劲大者适用', dg: { type: 'switch', stem: '#3c3a37', tone: 'linear' } },
+      { name: '银轴', type: '线性轴', force: '45g', travel: '3.4mm', desc: '触发行程短触发快，电竞向，误触率略高', dg: { type: 'switch', stem: '#9aa2ab', tone: 'linear' } },
+      { name: '静音红/静音月白', type: '线性/段落', force: '45g', travel: '3.5mm', desc: '加硅胶降噪，图书馆/卧室友好', dg: { type: 'switch', stem: '#c2695a', tone: 'tactile' } }
     ],
     keycaps: [
       { name: '材质 ABS', desc: '手感细腻成本低，长期使用易打油发亮' },
@@ -439,7 +439,12 @@ window.DAZI_CONTENT = (function () {
       '打油是 ABS 宿命，介意就选 PBT 或干脆接受包浆',
       '进水立刻断电倒置晾干，48 小时后再通电',
       '蓝牙键盘长期不用建议每月充一次电护电池'
-    ]
+    ],
+    diagrams: {
+      forceCurve: { title: '轴体手感曲线', desc: '线性轴直上直下，段落轴中途有一个小凸起，咔嗒轴先冲顶再回落。触发压力（g）决定手感轻重，触发行程（mm）决定响应快慢。' },
+      keycapProfile: { title: '键帽高度剖面', desc: '键帽有高矮之分：原厂/OEM/SA/矮轴。键帽越高，手腕抬得越高；矮轴接近笔记本手感，长时间打字更轻松。' },
+      structure: { title: '结构剖面对比', desc: '船壳由外壳直接承力，手感扎实偏硬；Gasket 让内胆悬吊在垫片上，敲击更软弹、声音更沉。' }
+    }
   };
 
   /* ==================== 部署信息 ==================== */

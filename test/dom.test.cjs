@@ -25,6 +25,7 @@ const { document } = window;
   'public/assets/js/data/content.js',
   'public/assets/js/engine.js',
   'public/assets/js/keyboard.js',
+  'public/assets/js/keyboard-diagrams.js',
   'public/assets/js/modes.js',
   'public/assets/js/app.js',
   'public/assets/js/knowledge-view.js'
@@ -63,7 +64,16 @@ async function t(name, fn) {
   await t('默认英文模式生成练习单元', () => {
     assert.ok(document.querySelectorAll('#textLine .unit').length >= 8, '应有练习单元');
     assert.strictEqual($('pinyinBox').style.display, 'none');
-    assert.strictEqual($('kbWrap').style.display, 'none');
+    assert.strictEqual($('kbWrap').style.display, '', '英文模式也应显示虚拟键盘');
+    assert.ok(document.querySelectorAll('#keyboard .kb-key').length > 55, '虚拟键盘应渲染完整');
+  });
+  await t('下拉框点击不被全局 blur 打断', () => {
+    const sel = $('levelSelect');
+    sel.focus();
+    assert.strictEqual(document.activeElement, sel, '下拉框应获得焦点');
+    // 模拟在 select 上按下鼠标（原生下拉框在真实浏览器里会保持打开）
+    sel.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true }));
+    assert.strictEqual(document.activeElement, sel, '在 select 上按下不应使其失焦');
   });
   await t('知识库三个板块渲染完成', () => {
     assert.ok(document.querySelectorAll('#knTabs .kn-tab').length === 5, '知识库 5 个 tab');
@@ -129,23 +139,21 @@ async function t(name, fn) {
   await t('切到拼音，输完拼音选字上屏', () => {
     click(document.querySelectorAll('#modeTabs .mode-tab')[1]); // 拼音
     assert.strictEqual($('pinyinBox').style.display, '', '拼音区应显示');
-    const target = window.DAZI_APP; // 会话在闭包内，从 DOM 推断
     // 读当前目标词的拼音芯片
     const chips = [...document.querySelectorAll('#pSyls .p-syl')];
     assert.ok(chips.length >= 1, '应有音节芯片');
     const full = chips.map((c) => c.textContent).join('');
     full.split('').forEach((ch) => key(ch));
-    // 候选框出现，点第一个候选（应为目标词，词库候选词排在前）
+    // 候选框出现，找与目标词一致的候选
     const cands = document.querySelectorAll('#candidateBar .cand');
     assert.ok(cands.length >= 1, '应出现候选');
-    // 找到与目标词一致的候选并点击
     const cur = document.querySelector('.p-cur');
     assert.ok(cur, '应有当前目标词');
-    let hit = false;
-    cands.forEach((c) => { if (c.textContent.replace(/^\d/, '') === cur.textContent) hit = true; });
-    assert.ok(hit, '目标词应在候选中: ' + cur.textContent);
-    [...cands].find((c) => c.textContent.replace(/^\d/, '') === cur.textContent)
-      .dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true }));
+    const word = cur.dataset.w;
+    const hit = [...cands].find((c) => c.textContent.replace(/^\d/, '') === word);
+    assert.ok(hit, '目标词「' + word + '」应在候选中，实际: ' +
+      [...cands].map((c) => c.textContent).join(' '));
+    hit.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true }));
     assert.ok(document.querySelector('.p-done'), '选字后应有已确认文本');
   });
 

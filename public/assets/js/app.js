@@ -151,7 +151,7 @@
     var opts = { scheme: state.scheme, full: state.full };
     var units = m.create(state.level, unitCount(), opts);
     if (m.kind === 'pinyin') {
-      state.session = E.createPinyinSession(units, M.buildPinyinDict());
+      state.session = E.createPinyinSession(units, M.pinyinDictFor(units));
     } else {
       state.session = E.createDirectSession(units);
     }
@@ -184,7 +184,7 @@
     var isPy = m.kind === 'pinyin';
     $('pinyinBox').style.display = isPy ? '' : 'none';
     $('pSyls').style.display = isPy ? '' : 'none';
-    $('kbWrap').style.display = (state.modeId === 'english') ? 'none' : '';
+    $('kbWrap').style.display = ''; // 键盘始终可见（英文模式也高亮下一键）
     $('startHint').style.display = s.stats.startedAt ? 'none' : '';
     if (isPy) renderPinyin(); else renderDirect();
     updateKeyboard();
@@ -221,8 +221,11 @@
     var p = s.current();
     var html = '';
     s.committed.forEach(function (w) { html += '<span class="p-done">' + esc(w) + '</span>'; });
-    if (p) html += '<span class="p-cur">' + esc(p.w) + '</span>';
-    html += '<span class="p-buffer">' + esc(s.buffer) + '</span><span class="p-caret"></span>';
+    if (p) {
+      html += '<span class="p-cur" data-w="' + esc(p.w) + '">' + esc(p.w) +
+        '<span class="p-py">' + esc(p.syl.join(' ')) + '</span></span>';
+    }
+    html += '<span class="p-input"><span class="p-buffer">' + esc(s.buffer) + '</span><span class="p-caret"></span></span>';
     box.innerHTML = html;
     // 音节进度芯片
     var sylsEl = $('pSyls');
@@ -454,8 +457,10 @@
     $('restartBtn').onclick = function () { restart(); };
     $('againBtn').onclick = function () { restart(); };
     $('hintCheck').onchange = function (e) { state.hint = e.target.checked; renderAll(); };
-    // 点击页面移除焦点，保证键盘事件可达
-    document.addEventListener('click', function () {
+    // 点击空白处收起焦点（让键盘事件继续可用），但不要打断下拉框/输入框的操作
+    document.addEventListener('mousedown', function (e) {
+      var t = e.target;
+      if (t && t.closest && t.closest('select, option, input, textarea, button, a, label')) return;
       if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     });
     startTimer();

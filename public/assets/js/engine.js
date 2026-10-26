@@ -109,10 +109,32 @@
         return p ? p.syl.join('') : '';
       },
       lookup: function () {
-        var list = this.dict[this.buffer];
-        if (!list) return [];
-        var arr = Array.isArray(list) ? list : String(list).split('');
-        return arr.slice(0, 9);
+        var buf = this.buffer;
+        if (!buf) return [];
+        var out = [], seen = {};
+        function add(list, limit) {
+          for (var i = 0; i < list.length && out.length < limit; i++) {
+            if (!seen[list[i]]) { seen[list[i]] = 1; out.push(list[i]); }
+          }
+        }
+        function toArr(v) { return v ? (Array.isArray(v) ? v : String(v).split('')) : []; }
+        function wordsOf(list) { return list.filter(function (c) { return c.length > 1; }); }
+        function charsOf(list) { return list.filter(function (c) { return c.length === 1; }); }
+
+        var exact = toArr(this.dict[buf]);
+        // 1. 词优先：当前拼音命中的词 + 以当前拼音开头的联想词
+        add(wordsOf(exact), 9);
+        if (buf.length <= 5) {
+          for (var k in this.dict) {
+            if (k !== buf && k.indexOf(buf) === 0) {
+              add(wordsOf(toArr(this.dict[k])), 9);
+              if (out.length >= 9) break;
+            }
+          }
+        }
+        // 2. 再补单字候选
+        add(charsOf(exact), 9);
+        return out;
       },
       isComplete: function () { return this.buffer === this.fullPinyin(); },
       progress: function () { return this.stats.completed / this.phrases.length; },
@@ -125,10 +147,14 @@
         var full = p.syl.join('');
         var isRight = full.indexOf(this.buffer + ch) === 0;
         if (isRight) this.stats.correct++;
-        else { this.stats.errors++; this.wrongAt = now(); }
+        else {
+          this.stats.errors++;
+          this.wrongAt = now();
+          this.lastMsg = '「' + ch + '」与目标拼音「' + full + '」不符，按退格修改';
+        }
         this.buffer += ch;
         this.candidates = this.lookup();
-        this.lastMsg = '';
+        if (isRight) this.lastMsg = '';
         return { ok: isRight, candidates: this.candidates };
       },
       backspace: function () {
@@ -144,7 +170,7 @@
         var cand = this.candidates[idx];
         if (!cand) return null;
         this.stats.keys++;
-        if (this.isComplete() && cand === p.w) {
+        if (cand === p.w && this.isComplete()) {
           this.stats.correct++;
           this.stats.chars += p.w.length;
           this.committed.push(p.w);
@@ -162,8 +188,11 @@
         this.wrongAt = now();
         this.buffer = '';
         this.candidates = [];
-        if (!this.isComplete()) this.lastMsg = '词还没输完，请继续输入拼音';
-        else this.lastMsg = '选错了，应该是「' + p.w + '」';
+        if (!this.isComplete()) {
+          this.lastMsg = '请先输完「' + p.w + '」的完整拼音 ' + p.syl.join(' ') + '，再选字';
+        } else {
+          this.lastMsg = '选错了，目标是「' + p.w + '」，请重新输入';
+        }
         return { ok: false, reason: this.lastMsg };
       }
     };
