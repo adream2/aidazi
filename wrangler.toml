@@ -1,7 +1,7 @@
 # Cloudflare Workers 配置
 # 纯静态站点通过 [assets] 绑定直接发布，无需编写 Worker 脚本
 # 部署：npm install && npx wrangler login && npm run deploy
-name = "lian-dazi"
+name = "ai-da-zi"
 compatibility_date = "2025-10-01"
 
 [assets]

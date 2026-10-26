@@ -75,11 +75,35 @@ async function t(name, fn) {
     sel.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true }));
     assert.strictEqual(document.activeElement, sel, '在 select 上按下不应使其失焦');
   });
-  await t('知识库三个板块渲染完成', () => {
+  await t('知识库与图鉴渲染完成', () => {
     assert.ok(document.querySelectorAll('#knTabs .kn-tab').length === 5, '知识库 5 个 tab');
     assert.ok(document.querySelector('#knBody .kn-table'), '五笔字根表');
     assert.ok(document.querySelectorAll('#guideBody .guide-card').length > 30, '键盘图鉴卡片');
-    assert.ok(document.querySelectorAll('#deployBody .deploy-card').length === 3, '部署卡片');
+    assert.ok(document.querySelectorAll('#guideBody .dg-layout').length >= 8, '配列俯视图（8 种配列）');
+    assert.ok(document.querySelectorAll('#guideBody .dg-switch').length >= 6, '轴体剖面图');
+    assert.ok(document.querySelectorAll('#guideBody .dg-chart').length >= 3, '键帽/结构/曲线图');
+    assert.ok(document.querySelectorAll('#guideBody .kb-zone').length >= 12, '区域划分标注');
+  });
+  await t('配列图键位齐全：100% 应有 104 键', () => {
+    const layouts = document.querySelectorAll('#guideBody .dg-layout');
+    const full = layouts[0]; // 第一张是 100% / 104 键
+    const keys = full.querySelectorAll('.kb-base').length;
+    assert.strictEqual(keys, 104, '100% 配列应画满 104 个键，实际 ' + keys);
+    // 数字区/导航区/F 区都应有键
+    const labels = [...full.querySelectorAll('.kb-key-label')].map((n) => n.textContent);
+    ['F12', 'Enter', 'Shift', 'PrtSc', 'Num', '↑', '→', '⌫', 'Fn', 'Menu'].forEach((k) => {
+      assert.ok(labels.indexOf(k) >= 0, '缺少键位: ' + k);
+    });
+    // 空格键：真实键盘上无字符，但宽度应为 6.25u
+    const space = [...full.querySelectorAll('.kb-base')].find((n) => parseFloat(n.getAttribute('width')) > 100);
+    assert.ok(space, '应存在 6.25u 的空格键');
+  });
+  await t('前端不含部署板块（该内容只放 README）', () => {
+    assert.strictEqual($('deployBody'), null, '不应有部署容器');
+    assert.strictEqual(document.querySelector('a[href="#deploy"]'), null, '导航不应有部署入口');
+    const bodyText = document.body.textContent;
+    ['一条命令部署', 'Cloudflare Workers', 'docker compose', 'Git 版本控制']
+      .forEach((t) => assert.ok(bodyText.indexOf(t) < 0, '页面不应出现: ' + t));
   });
   await t('知识库五个 tab 均可切换渲染', () => {
     const tabs = document.querySelectorAll('#knTabs .kn-tab');

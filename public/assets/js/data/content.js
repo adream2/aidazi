@@ -380,14 +380,14 @@ window.DAZI_CONTENT = (function () {
   /* ==================== 键盘图鉴 ==================== */
   var keyboardGuide = {
     layouts: [
-      { name: '100% / 104 键', desc: '全尺寸带数字区，财务、数据录入效率最高，占地最大', dg: { type: 'layout', spec: { f: 1, nav: 1, num: 1 } } },
-      { name: '96%', desc: '压缩了功能区间隙，保留数字区，体积接近 87 键', dg: { type: 'layout', spec: { nav: 1, num: 1 } } },
-      { name: 'TKL / 87 键', desc: '砍掉数字区，游戏玩家标配，给鼠标留出大片空间', dg: { type: 'layout', spec: { f: 1, nav: 1 } } },
-      { name: '75%', desc: '保留 F 区和方向键，砍掉编辑区间隙，小巧与功能平衡', dg: { type: 'layout', spec: { f: 1, arrow: 1 } } },
-      { name: '65%', desc: '砍掉 F 区和方向键（用组合键），桌面极简党最爱', dg: { type: 'layout', spec: { arrow: 1 } } },
-      { name: '60%', desc: '最紧凑的常用配列，~ 都要用组合键，便携之王', dg: { type: 'layout', spec: {} } },
-      { name: '40% 及以下', desc: '没有数字行，极客玩具，日常使用门槛高', dg: { type: 'layout', spec: { rows: [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2], [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1.5], [1.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.25], [2.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2.75]] } } },
-      { name: '分体式 / Alice', desc: '左右分开或弧形倾斜，符合人体肩宽与手腕自然角度', dg: { type: 'split' } }
+      { name: '100% / 104 键', keys: '104 键', size: '约 444 × 140 mm', desc: '全尺寸带数字区，财务、数据录入效率最高，占地最大', zones: 'F 区 · 主键区 · 导航区 · 方向键 · 数字区', dg: { type: 'layout', spec: { f: 1, nav: 1, num: 1, navTop: 1 } } },
+      { name: '96%', keys: '96 键', size: '约 400 × 135 mm', desc: '压缩了功能区间隙，保留数字区，体积接近 87 键', zones: '主键区 · 导航区 · 方向键 · 数字区（无 F 区）', dg: { type: 'layout', spec: { nav: 1, num: 1 } } },
+      { name: 'TKL / 87 键', keys: '87 键', size: '约 360 × 135 mm', desc: '砍掉数字区，游戏玩家标配，给鼠标留出大片空间', zones: 'F 区 · 主键区 · 导航区 · 方向键', dg: { type: 'layout', spec: { f: 1, nav: 1, navTop: 1 } } },
+      { name: '75%', keys: '80 ~ 82 键', size: '约 320 × 120 mm', desc: '保留 F 区和方向键，砍掉独立编辑键，小巧与功能平衡', zones: 'F 区 · 主键区 · 编辑键列（Home/PgUp/Del/PgDn）', dg: { type: 'layout', spec: { f: 1, side: 1 } } },
+      { name: '65%', keys: '66 ~ 68 键', size: '约 310 × 110 mm', desc: '保留 F 区和导航/方向键，砍掉数字区与独立编辑键', zones: 'F 区 · 主键区 · 导航区 · 方向键', dg: { type: 'layout', spec: { f: 1, nav: 1 } } },
+      { name: '60%', keys: '61 ~ 64 键', size: '约 290 × 110 mm', desc: '最紧凑的常用配列，~ 都要用组合键，便携之王', zones: '主键区（无 F 区 / 无导航区 / 无方向键）', dg: { type: 'layout', spec: {} } },
+      { name: '40% 及以下', keys: '47 ~ 50 键', size: '约 240 × 100 mm', desc: '没有数字行也没有 F 行，极客玩具，日常使用门槛高', zones: '主键区（4 行）', dg: { type: 'layout', spec: { rows: [[{ x: 0, c: '`' }, { x: 1, c: '1' }, { x: 2, c: '2' }, { x: 3, c: '3' }, { x: 4, c: '4' }, { x: 5, c: '5' }, { x: 6, c: '6' }, { x: 7, c: '7' }, { x: 8, c: '8' }, { x: 9, c: '9' }, { x: 10, c: '0' }, { x: 11, c: '-' }, { x: 12, c: '=' }, { x: 13, w: 2, c: '⌫' }], [{ x: 0, w: 1.5, c: 'Tab' }, { x: 1.5, c: 'Q' }, { x: 2.5, c: 'W' }, { x: 3.5, c: 'E' }, { x: 4.5, c: 'R' }, { x: 5.5, c: 'T' }, { x: 6.5, c: 'Y' }, { x: 7.5, c: 'U' }, { x: 8.5, c: 'I' }, { x: 9.5, c: 'O' }, { x: 10.5, c: 'P' }, { x: 11.5, c: '[' }, { x: 12.5, c: ']' }, { x: 13.5, w: 1.5, c: '\\' }], [{ x: 0, w: 1.75, c: 'Caps' }, { x: 1.75, c: 'A' }, { x: 2.75, c: 'S' }, { x: 3.75, c: 'D' }, { x: 4.75, c: 'F' }, { x: 5.75, c: 'G' }, { x: 6.75, c: 'H' }, { x: 7.75, c: 'J' }, { x: 8.75, c: 'K' }, { x: 9.75, c: 'L' }, { x: 10.75, c: ';' }, { x: 11.75, c: '\'' }, { x: 12.75, w: 2.25, c: 'Enter' }], [{ x: 0, w: 2.25, c: 'Shift' }, { x: 2.25, c: 'Z' }, { x: 3.25, c: 'X' }, { x: 4.25, c: 'C' }, { x: 5.25, c: 'V' }, { x: 6.25, c: 'B' }, { x: 7.25, c: 'N' }, { x: 8.25, c: 'M' }, { x: 9.25, c: ',' }, { x: 10.25, c: '.' }, { x: 11.25, c: '/' }, { x: 12.25, w: 2.75, c: 'Shift' }]] } } },
+      { name: '分体式 / Alice', keys: '约 76 键（左右各半）', size: '每半约 190 × 120 mm', desc: '左右分开或弧形倾斜，符合人体肩宽与手腕自然角度', zones: '左手 6 列 · 右手 6 列（拇指键可另加）', dg: { type: 'split' } }
     ],
     switches: [
       { name: '青轴', type: '段落轴', force: '50g', travel: '4.0mm', desc: '段落感清脆有声，「打字机」手感，办公室慎用', dg: { type: 'switch', stem: '#3d7ea6', tone: 'click' } },
@@ -395,7 +395,7 @@ window.DAZI_CONTENT = (function () {
       { name: '红轴', type: '线性轴', force: '45g', travel: '4.0mm', desc: '直上直下压力轻，游戏和长时间打字都合适', dg: { type: 'switch', stem: '#b4413a', tone: 'linear' } },
       { name: '黑轴', type: '线性轴', force: '60g', travel: '4.0mm', desc: '压力克数大，回弹猛，手劲大者适用', dg: { type: 'switch', stem: '#3c3a37', tone: 'linear' } },
       { name: '银轴', type: '线性轴', force: '45g', travel: '3.4mm', desc: '触发行程短触发快，电竞向，误触率略高', dg: { type: 'switch', stem: '#9aa2ab', tone: 'linear' } },
-      { name: '静音红/静音月白', type: '线性/段落', force: '45g', travel: '3.5mm', desc: '加硅胶降噪，图书馆/卧室友好', dg: { type: 'switch', stem: '#c2695a', tone: 'tactile' } }
+      { name: '静音红/静音月白', type: '线性/段落', force: '45g', travel: '3.5mm', desc: '加硅胶降噪，图书馆/卧室友好', dg: { type: 'switch', stem: '#c2695a', tone: 'linear' } }
     ],
     keycaps: [
       { name: '材质 ABS', desc: '手感细腻成本低，长期使用易打油发亮' },
@@ -447,42 +447,6 @@ window.DAZI_CONTENT = (function () {
     }
   };
 
-  /* ==================== 部署信息 ==================== */
-  var deploy = [
-    {
-      id: 'cloudflare',
-      title: 'Cloudflare Workers',
-      badge: '推荐 · 全球 CDN · 免费额度',
-      steps: [
-        'npm install',
-        'npx wrangler login',
-        'npm run deploy'
-      ],
-      note: '静态资源通过 wrangler.toml 的 [assets] 绑定直接发布，无需编写 Worker 脚本；也可用 wrangler pages deploy public 发布到 Pages。'
-    },
-    {
-      id: 'docker',
-      title: 'Docker',
-      badge: '一条命令 · 适合 NAS/服务器',
-      steps: [
-        'docker compose up -d',
-        '# 或手动：',
-        'docker build -t dazi . && docker run -d -p 8080:80 dazi'
-      ],
-      note: '基于 nginx:alpine，仅 20MB 左右，监听 80 端口，compose 默认映射到宿主机 8080。'
-    },
-    {
-      id: 'static',
-      title: '静态托管',
-      badge: '上传即用 · 零依赖',
-      steps: [
-        '# 把 public/ 目录内容上传到任意静态托管：',
-        'Nginx / OSS / COS / GitHub Pages / Vercel / Netlify'
-      ],
-      note: '纯静态站点，无构建步骤、无后端依赖，双击 public/index.html 也能本地打开。'
-    }
-  ];
-
   return {
     schemes: schemes,
     encodeSyllable: encodeSyllable,
@@ -494,8 +458,7 @@ window.DAZI_CONTENT = (function () {
     strokes: strokes,
     english: english,
     fingering: fingering,
-    keyboardGuide: keyboardGuide,
-    deploy: deploy
+    keyboardGuide: keyboardGuide
   };
 })();
 

@@ -38,5 +38,5 @@ http.createServer((req, res) => {
     res.end(data);
   });
 }).listen(port, () => {
-  console.log(`练 · 打字 → http://localhost:${port}`);
+  console.log(`爱打字 → http://localhost:${port}`);
 });
