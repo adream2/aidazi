@@ -4,14 +4,14 @@
 
 ## 站点信息
 - 名称：爱打字（aidazi）
-- 地址：https://adream2.github.io/aidazi/
+- 地址：https://aidazi.lxzt.fun/
 - 归属：ZT折腾簿（https://www.ztsite.com）
 - 源码：https://github.com/adream2/aidazi
 - 语言：简体中文（zh-CN）
 - 费用：免费，无需注册与安装
 
 ## 主要内容
-- 英文打字练习（https://adream2.github.io/aidazi/#practice）：随机单词、名言、代码三档，显示 WPM
+- 英文打字练习（https://aidazi.lxzt.fun/#practice）：随机单词、名言、代码三档，显示 WPM
 - 拼音打字练习：模拟真实输入法，输入拼音后候选栏选字（词优先、单字随后）
 - 五笔练习：86 版编码，默认最简码，可切换全码；收录 1200 常用字
 - 双拼练习：小鹤、微软、搜狗、智能ABC、自然码五套方案，虚拟键盘实时显示键位

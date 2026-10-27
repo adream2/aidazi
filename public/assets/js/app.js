@@ -296,7 +296,15 @@
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
     var k = e.key;
     // 全局快捷键
-    if (k === 'Escape') { restart(); return; }
+    if (k === 'Escape') {
+      // 全屏时 Esc 交给浏览器退出全屏，不重置进度
+      if (document.fullscreenElement) return;
+      if (document.body.classList.contains('focus-mode')) { exitFocus(); return; }
+      restart();
+      return;
+    }
+    // Ctrl / ⌘ + Enter 切换全屏练习
+    if ((e.ctrlKey || e.metaKey) && k === 'Enter') { e.preventDefault(); toggleFullscreen(); return; }
     if (!state.session) return;
     var s = state.session;
 
@@ -448,11 +456,71 @@
     $('themeToggle').textContent = dark ? '☀ 浅色' : '☾ 深色';
   }
 
+  /* ---------- 全屏 / 专注模式 ---------- */
+  var focusFallback = false;   // 浏览器拒绝 fullscreen 时的 CSS 兜底
+
+  function isFocus() {
+    return !!document.fullscreenElement || focusFallback;
+  }
+
+  function setFocusUI(on) {
+    document.body.classList.toggle('focus-mode', on);
+    var btn = $('fsBtn');
+    if (btn) {
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      $('fsLabel').textContent = on ? '退出全屏' : '全屏';
+      btn.title = on ? '退出全屏（Esc）' : '全屏练习（Ctrl/⌘ + Enter）';
+    }
+  }
+
+  function enterFocus() {
+    var el = $('practice');
+    if (el.requestFullscreen) {
+      el.requestFullscreen().then(function () {
+        focusFallback = false;
+        setFocusUI(true);
+      }).catch(function () {
+        // 无用户手势或浏览器不支持时，用 CSS 专注模式兜底
+        focusFallback = true;
+        setFocusUI(true);
+      });
+    } else {
+      focusFallback = true;
+      setFocusUI(true);
+    }
+  }
+
+  function exitFocus() {
+    focusFallback = false;
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(function () {});
+    }
+    setFocusUI(false);
+  }
+
+  function toggleFullscreen() {
+    if (isFocus()) exitFocus(); else enterFocus();
+  }
+
+  function initFullscreen() {
+    var btn = $('fsBtn');
+    if (btn) btn.onclick = function () { toggleFullscreen(); };
+    document.addEventListener('fullscreenchange', function () {
+      setFocusUI(!!document.fullscreenElement);
+    });
+    // 有的浏览器不支持 #practice 全屏，直接退回到普通模式
+    document.addEventListener('fullscreenerror', function () {
+      focusFallback = true;
+      setFocusUI(true);
+    });
+  }
+
   /* ---------- 启动 ---------- */
   function init() {
     initTheme();
     renderModeTabs();
     restart();
+    initFullscreen();
     document.addEventListener('keydown', onKey);
     $('restartBtn').onclick = function () { restart(); };
     $('againBtn').onclick = function () { restart(); };

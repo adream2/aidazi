@@ -291,6 +291,25 @@ async function t(name, fn) {
     assert.strictEqual(document.querySelectorAll('#textLine .unit.done').length, 0);
     assert.strictEqual($('stProg').textContent, '0%');
   });
+  await t('全屏专注模式：按钮与 Ctrl+Enter 可切换、Esc 退出', () => {
+    const btn = $('fsBtn');
+    assert.ok(btn, '应有全屏按钮');
+    assert.strictEqual(btn.getAttribute('aria-pressed'), 'false');
+    // 进入（jsdom 无 requestFullscreen → 走 CSS 专注模式兜底）
+    click(btn);
+    assert.strictEqual(document.body.classList.contains('focus-mode'), true, '应进入专注模式');
+    assert.strictEqual(btn.getAttribute('aria-pressed'), 'true');
+    assert.strictEqual($('fsLabel').textContent, '退出全屏');
+    // Esc 退出（不应重置练习）
+    key('Escape');
+    assert.strictEqual(document.body.classList.contains('focus-mode'), false, 'Esc 应退出专注模式');
+    assert.strictEqual(btn.getAttribute('aria-pressed'), 'false');
+    // Ctrl+Enter 进入
+    document.dispatchEvent(new window.KeyboardEvent('keydown', { key: 'Enter', ctrlKey: true, bubbles: true, cancelable: true }));
+    assert.strictEqual(document.body.classList.contains('focus-mode'), true, 'Ctrl+Enter 应进入专注模式');
+    click(btn);
+    assert.strictEqual(document.body.classList.contains('focus-mode'), false, '再点按钮退出');
+  });
   await t('主题切换写入 localStorage', () => {
     click($('themeToggle'));
     assert.strictEqual(document.documentElement.dataset.theme, 'dark');

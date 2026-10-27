@@ -4,23 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- 站点域名：部署到自定义域名后，把下面所有 adream2.github.io/aidazi 换成你的域名 -->
+  <!-- 站点域名：换域名时替换下方 canonical / og:url / og:image / twitter:image / JSON-LD 中的地址
+       以及 robots.txt、sitemap.xml、llms.txt 里的地址 -->
   <title>爱打字 · 在线打字练习 — 拼音/五笔86/双拼/笔画/英文五种模式</title>
   <meta name="description" content="爱打字（aidazi）是免费的在线打字练习站：英文、拼音、五笔 86、双拼（小鹤/微软/搜狗/智能ABC/自然码）、笔画五种模式，附 86 版字根口诀与字根表、双拼键位对照、指法诀窍与键盘配列/轴体图鉴。打开即练，无需注册。">
   <meta name="keywords" content="打字练习,在线打字,打字速度测试,五笔练习,五笔86字根口诀,双拼练习,小鹤双拼,微软双拼,搜狗双拼,智能ABC双拼,自然码双拼,拼音打字,笔画输入法,键盘图鉴,机械键盘配列">
   <meta name="author" content="ZT折腾簿">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <meta name="theme-color" content="#faf9f7">
-  <link rel="canonical" href="https://adream2.github.io/aidazi/">
+  <link rel="canonical" href="https://aidazi.lxzt.fun/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="爱打字">
   <meta property="og:title" content="爱打字 · 在线打字练习（拼音/五笔86/双拼/笔画/英文）">
   <meta property="og:description" content="五种输入法模式的免费在线打字练习：五笔 86 字根口诀、双拼五套方案键位对照、拼音候选选字、笔画输入、英文 WPM 测试，附键盘配列与轴体图鉴。">
-  <meta property="og:url" content="https://adream2.github.io/aidazi/">
+  <meta property="og:url" content="https://aidazi.lxzt.fun/">
   <meta property="og:locale" content="zh_CN">
-  <meta property="og:image" content="https://adream2.github.io/aidazi/assets/og-cover.png">
+  <meta property="og:image" content="https://aidazi.lxzt.fun/assets/og-cover.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="爱打字 — 在线打字练习站">
@@ -29,7 +30,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="爱打字 · 在线打字练习（拼音/五笔86/双拼/笔画/英文）">
   <meta name="twitter:description" content="五种输入法模式的免费在线打字练习，附字根口诀、双拼键位对照与键盘图鉴。">
-  <meta name="twitter:image" content="https://adream2.github.io/aidazi/assets/og-cover.png">
+  <meta name="twitter:image" content="https://aidazi.lxzt.fun/assets/og-cover.png">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23b4433a'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='serif'>爱</text></svg>">
   <link rel="stylesheet" href="assets/css/style.css">
@@ -41,18 +42,18 @@
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://adream2.github.io/aidazi/#website",
-        "url": "https://adream2.github.io/aidazi/",
+        "@id": "https://aidazi.lxzt.fun/#website",
+        "url": "https://aidazi.lxzt.fun/",
         "name": "爱打字",
         "alternateName": "aidazi",
         "inLanguage": "zh-CN",
-        "publisher": { "@id": "https://adream2.github.io/aidazi/#author" }
+        "publisher": { "@id": "https://aidazi.lxzt.fun/#author" }
       },
       {
         "@type": "WebApplication",
-        "@id": "https://adream2.github.io/aidazi/#app",
+        "@id": "https://aidazi.lxzt.fun/#app",
         "name": "爱打字",
-        "url": "https://adream2.github.io/aidazi/",
+        "url": "https://aidazi.lxzt.fun/",
         "description": "免费的在线打字练习站，提供英文、拼音、五笔 86、双拼（5 套方案）、笔画五种练习模式，并附字根口诀、双拼键位对照、指法诀窍与键盘图鉴。",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Web Browser (Chrome / Edge / Safari / Firefox)",
@@ -69,19 +70,19 @@
           "86 版字根口诀与字根表、双拼键位对照、指法诀窍",
           "键盘配列、轴体、键帽与结构图鉴（自绘 SVG）"
         ],
-        "author": { "@id": "https://adream2.github.io/aidazi/#author" },
+        "author": { "@id": "https://aidazi.lxzt.fun/#author" },
         "sameAs": ["https://github.com/adream2/aidazi"]
       },
       {
         "@type": "Organization",
-        "@id": "https://adream2.github.io/aidazi/#author",
+        "@id": "https://aidazi.lxzt.fun/#author",
         "name": "ZT折腾簿",
         "url": "https://www.ztsite.com",
         "sameAs": ["https://www.ztsite.com", "https://github.com/adream2"]
       },
       {
         "@type": "FAQPage",
-        "@id": "https://adream2.github.io/aidazi/#faq",
+        "@id": "https://aidazi.lxzt.fun/#faq",
         "mainEntity": [
           {
             "@type": "Question",
@@ -175,6 +176,10 @@
           <label class="check"><input type="checkbox" id="hintCheck" checked><span>显示提示</span></label>
           <div class="flex-spacer"></div>
           <button id="restartBtn" class="btn" type="button">重新开始</button>
+          <button id="fsBtn" class="btn btn-fs" type="button" aria-pressed="false" title="全屏练习（Ctrl/⌘ + Enter）">
+            <svg class="fs-icon" viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path fill="currentColor" d="M1 1h5v1.6H2.6V6H1V1Zm9 0h5v5h-1.6V2.6H10V1ZM1 10h1.6v3.4H6V15H1v-5Zm12.4 0H15v5h-5v-1.6h3.4V10Z"/></svg>
+            <span id="fsLabel">全屏</span>
+          </button>
         </div>
         <div class="stats-bar">
           <div class="stat"><b id="stSpeed">0</b><span>速度</span></div>

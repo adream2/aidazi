@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://adream2.github.io/aidazi/sitemap.xml
+Sitemap: https://aidazi.lxzt.fun/sitemap.xml

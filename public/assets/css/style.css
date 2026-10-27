@@ -878,3 +878,91 @@ main { max-width: 1060px; margin: 0 auto; padding: 0 24px 80px; }
 @media (max-width: 640px) {
   .site-link { display: none; }
 }
+
+/* ============ 全屏 / 专注模式 ============ */
+.btn-fs { display: inline-flex; align-items: center; gap: 6px; }
+.btn-fs .fs-icon { flex: none; opacity: .8; }
+.btn-fs[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.btn-fs[aria-pressed="true"] .fs-icon { opacity: 1; }
+
+/* 真全屏：只渲染 #practice，放大字号与练习区 */
+#practice:fullscreen {
+  background: var(--bg);
+  padding: 2.5vh 3vw;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-content: safe center;   /* 内容溢出时避免顶部被裁 */
+}
+#practice:fullscreen .mode-tabs { margin-bottom: 16px; flex: none; }
+#practice:fullscreen .panel { flex: none; }
+/* 全屏一律 5 列统计（覆盖窄屏的 3 列规则） */
+#practice:fullscreen .stats-bar,
+body.focus-mode #practice .stats-bar { grid-template-columns: repeat(5, 1fr); }
+#practice:fullscreen .stat:nth-child(3),
+body.focus-mode #practice .stat:nth-child(3) { border-right: 1px solid var(--border); }
+#practice:fullscreen .mode-tabs { overflow-x: auto; }
+#practice:fullscreen .mode-tab { padding: 14px 12px; }
+#practice:fullscreen .mode-tab b { font-size: 16px; }
+#practice:fullscreen .panel-bar { padding: 14px 22px; }
+#practice:fullscreen .stats-bar .stat { padding: 16px 8px 13px; }
+#practice:fullscreen .stats-bar .stat b { font-size: clamp(22px, 2vw, 30px); }
+#practice:fullscreen .stats-bar .stat span { font-size: 13px; }
+#practice:fullscreen .stage {
+  min-height: clamp(200px, 30vh, 340px);
+  padding: 34px 38px 26px;
+}
+#practice:fullscreen .text-line { gap: 10px 20px; }
+#practice:fullscreen .unit { padding: 4px 10px; }
+#practice:fullscreen .u-char { font-size: clamp(30px, 3.1vw, 44px); }
+#practice:fullscreen .u-hint { font-size: 12.5px; }
+#practice:fullscreen .compose { font-size: clamp(26px, 2.6vw, 36px); }
+#practice:fullscreen .p-buffer { font-size: clamp(20px, 2vw, 26px); }
+#practice:fullscreen .p-caret { height: clamp(24px, 3vw, 34px); }
+#practice:fullscreen .p-syl { font-size: 14px; padding: 3px 12px; }
+#practice:fullscreen .cand { font-size: clamp(19px, 1.7vw, 25px); padding: 6px 16px; }
+#practice:fullscreen .cand-hint { font-size: 13px; }
+#practice:fullscreen .kb-wrap { padding: 10px 26px 20px; }
+#practice:fullscreen .kb { min-width: min(760px, 100%); gap: 6px; }
+#practice:fullscreen .kb-row { gap: 6px; }
+#practice:fullscreen .kb-key { height: 52px; }
+#practice:fullscreen .mode-intro { padding: 0 26px 22px; font-size: 13px; }
+#practice:fullscreen .result-card { margin-top: 18px; }
+
+/* CSS 兜底（浏览器拒绝 fullscreen 或按 Esc 退回时） */
+body.focus-mode { overflow: hidden; }
+body.focus-mode .site-header,
+body.focus-mode .hero,
+body.focus-mode #knowledge,
+body.focus-mode #guide,
+body.focus-mode #about,
+body.focus-mode #faq,
+body.focus-mode .site-footer { display: none !important; }
+body.focus-mode #practice {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--bg);
+  padding: 2.5vh 3vw;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-content: safe center;
+}
+body.focus-mode #practice .mode-tabs { flex: none; margin-bottom: 16px; }
+body.focus-mode #practice .panel { flex: none; }
+body.focus-mode #practice .stage { min-height: clamp(200px, 30vh, 340px); }
+body.focus-mode #practice .u-char { font-size: clamp(30px, 3.1vw, 44px); }
+body.focus-mode #practice .stats-bar .stat b { font-size: clamp(22px, 2vw, 30px); }
+
+@media (max-height: 620px) {
+  #practice:fullscreen .stage,
+  body.focus-mode #practice .stage { min-height: 160px; padding: 18px 22px 14px; }
+  #practice:fullscreen .kb-key { height: 42px; }
+}

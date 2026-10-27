@@ -4,6 +4,12 @@
 name = "ai-da-zi"
 compatibility_date = "2025-10-01"
 
+# 自定义域名（域名需在同一 Cloudflare 账户下；wrangler deploy 时自动绑定）
+# 注意：TOML 顶层键必须写在 [assets] 表之前，否则会被解析成 assets.routes
+routes = [
+  { pattern = "aidazi.lxzt.fun", custom_domain = true }
+]
+
 [assets]
 directory = "./public"
 # 未知路径回退到 index.html（单页应用行为，锚点导航无影响）

@@ -2,7 +2,7 @@
 
 在线打字练习站：**拼音 / 五笔 86 / 双拼 / 笔画 / 英文** 五种模式，附字根口诀、双拼键位对照、指法诀窍与键盘图鉴。纯静态站点——无后端、无构建步骤、零运行时依赖，一条命令部署到 **Cloudflare Workers**、**Docker** 或任意静态主机。
 
-- 线上地址：<https://adream2.github.io/aidazi/>（GitHub Pages，托管 `public/` 目录）
+- 线上地址：<https://aidazi.lxzt.fun/>（Cloudflare Workers 托管 `public/` 目录）
 - 源码仓库：<https://github.com/adream2/aidazi>
 - 由 [ZT折腾簿](https://www.ztsite.com) 维护
 
@@ -16,6 +16,7 @@
 | 双拼 | 五套方案 | 小鹤 / 微软 / 搜狗 / 智能ABC / 自然码，虚拟键盘实时显示键位映射并高亮下一键 |
 | 笔画 | 横竖撇捺折 | 手机笔画输入法练习，565 个常用字按画数分级 |
 
+- 全屏专注模式：一键全屏（`Ctrl/⌘ + Enter`），隐藏页面其他部分并放大练习区与字号，`Esc` 退出
 - 实时统计：速度、准确率、用时、进度；按模式+难度记录本地最佳（localStorage）
 - 成绩卡：错误字 Top 清单、新纪录提示
 - 知识库：86 版字根口诀与字根表、拆分五原则、末笔识别码、简码体系、常用字编码速查（可搜索）、五套双拼方案对照、拼音/笔画诀窍、指法分区图与练习阶段
@@ -37,17 +38,19 @@ python3 -m http.server -d public 8080
 
 ## 部署
 
-### 1. Cloudflare Workers（推荐）
+### 1. Cloudflare Workers（当前线上方案）
 
-静态资源通过 `wrangler.toml` 的 `[assets]` 绑定发布，无需编写 Worker 脚本：
+静态资源通过 `wrangler.toml` 的 `[assets]` 绑定发布，无需编写 Worker 脚本；自定义域在 `routes` 里声明（`custom_domain = true`，域名需在同一 Cloudflare 账户下）：
 
 ```bash
 npm install
 npx wrangler login
-npm run deploy        # wrangler deploy
+npm run deploy        # wrangler deploy，自动绑定 aidazi.lxzt.fun
 ```
 
-也可以发布到 Pages：`npx wrangler pages deploy public`。本地调试：`npm run dev`（wrangler dev）。
+线上地址：<https://aidazi.lxzt.fun/>。本地调试：`npm run dev`（wrangler dev）。
+
+> 改域名时：`wrangler.toml` 的 `routes`、`index.html` 里的 canonical / og:* / JSON-LD、`robots.txt`、`sitemap.xml`、`llms.txt` 一并替换。
 
 ### 2. Docker
 
@@ -60,9 +63,9 @@ docker run -d -p 8080:80 ai-da-zi
 
 基于 `nginx:alpine`，gzip + 静态资源缓存 + 单页回退，镜像约 20MB。
 
-### 3. GitHub Pages（已启用）
+### 3. GitHub Pages（镜像 / 备选）
 
-推送到 `main` 即自动部署：`.github/workflows/deploy-pages.yml` 会把 `public/` 打成 artifact 交给 Pages。仓库需在 **Settings → Pages → Build and deployment** 选择 **GitHub Actions**（本项目已配置好，`build_type=workflow`）。线上地址：<https://adream2.github.io/aidazi/>
+推送到 `main` 会自动部署到 <https://adream2.github.io/aidazi/>（`.github/workflows/deploy-pages.yml`，Pages 源需选 **GitHub Actions**）。页面里的 canonical 指向 `aidazi.lxzt.fun`，因此两个地址并存也不会被判为重复内容。
 
 ### 4. 其他静态托管
 
@@ -149,7 +152,7 @@ node test/dom.test.cjs       # jsdom 全流程冒烟（12 项，需 npm install�
 
 ## 链接
 
-- 线上：<https://adream2.github.io/aidazi/>
+- 线上：<https://aidazi.lxzt.fun/>
 - 仓库：<https://github.com/adream2/aidazi>
 - 主站：<https://www.ztsite.com>（ZT折腾簿）
 
