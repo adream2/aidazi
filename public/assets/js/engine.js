@@ -122,9 +122,16 @@
         function charsOf(list) { return list.filter(function (c) { return c.length === 1; }); }
 
         var exact = toArr(this.dict[buf]);
-        // 1. 词优先：当前拼音命中的词 + 以当前拼音开头的联想词
-        add(wordsOf(exact), 9);
-        if (buf.length <= 5) {
+        var exactWords = wordsOf(exact);
+        var exactChars = charsOf(exact);
+
+        // 1. 精确命中的词优先（目标词已被 pinyinDictFor 置顶，必定可见）
+        add(exactWords, 9);
+        // 2. 精确命中的单字（目标单字在此），最多占 5 个位置，给联想留位
+        var charQuota = Math.min(9, out.length + 5);
+        add(exactChars, charQuota);
+        // 3. 前缀联想词补空位（边输边联想），绝不挤掉单字
+        if (out.length < 9 && buf.length <= 5) {
           for (var k in this.dict) {
             if (k !== buf && k.indexOf(buf) === 0) {
               add(wordsOf(toArr(this.dict[k])), 9);
@@ -132,8 +139,6 @@
             }
           }
         }
-        // 2. 再补单字候选
-        add(charsOf(exact), 9);
         return out;
       },
       isComplete: function () { return this.buffer === this.fullPinyin(); },

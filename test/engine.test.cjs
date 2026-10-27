@@ -90,6 +90,27 @@ t('词未输完时选字判错', () => {
   assert.strictEqual(r.ok, false);
   assert.match(r.reason, /请先输完/);
 });
+t('单字目标不被联想词挤出候选（词+单字难度回归）', () => {
+  [['一','yi'],['下','xia'],['系','xi'],['时','shi']].forEach(([ch, py]) => {
+    const units = [{ w: ch, syl: [py] }];
+    const s = E.createPinyinSession(units, M.pinyinDictFor(units));
+    py.split('').forEach((c) => s.letter(c));
+    const idx = s.candidates.indexOf(ch);
+    assert.ok(idx >= 0 && idx <= 5, '「' + ch + '(' + py + ')」应出现在候选前 5 位，实际: ' + JSON.stringify(s.candidates));
+  });
+});
+t('联想保留：输到中途仍能看到目标词', () => {
+  const units = [{ w: '你好', syl: ['ni', 'hao'] }];
+  const s = E.createPinyinSession(units, M.pinyinDictFor(units));
+  'ni'.split('').forEach((c) => s.letter(c));
+  assert.ok(s.candidates.indexOf('你好') >= 0, '输 ni 时应联想出「你好」，实际: ' + JSON.stringify(s.candidates));
+  // 精确命中的单字应在联想词之前
+  const firstWord = s.candidates.findIndex((c) => c.length > 1);
+  const lastChar = s.candidates.map((c) => c.length).lastIndexOf(1);
+  if (firstWord >= 0 && lastChar >= 0) {
+    assert.ok(lastChar < firstWord, '单字候选应排在联想词之前');
+  }
+});
 t('前缀候选：输入部分拼音也能联想出候选', () => {
   const s = E.createPinyinSession([{ w: '你好', syl: ['ni', 'hao'] }], dict);
   s.letter('n');
