@@ -447,6 +447,32 @@ window.DAZI_CONTENT = (function () {
     }
   };
 
+
+  /* ==================== 键盘选购指南 ==================== */
+  var buyingGuide = {
+    budgets: [
+      { range: '200 元以下', tag: '能用', desc: '薄膜或入门机械。手感与寿命一般，但如果只是偶尔打字，够用。', pick: '带热插拔的入门款' },
+      { range: '200 – 500 元', tag: '主流性价比', desc: '国产轴 + 热插拔 + Gasket 结构已经很成熟，这个价位能满足九成人的需求。', pick: '红轴 / 茶轴 · 87 或 75 配列' },
+      { range: '500 – 1000 元', tag: '进阶', desc: '更好材料（PBT 键帽、厚重外壳）、更用心的卫星轴调教、更好的声音。', pick: '静音轴 · 三模 · 75%' },
+      { range: '1000 元以上', tag: '客制化', desc: '买的是材料、做工与声音调校，边际收益递减，适合已经入坑的人。', pick: 'Gasket 铝坨 · 定制键帽' }
+    ],
+    scenes: [
+      { scene: '办公室 / 宿舍', tip: '安静优先', desc: '红轴、茶轴或静音红轴，别带青轴——声音大且扰人。' },
+      { scene: '长时间码字', tip: '轻压力 + 软弹', desc: '45g 左右线性轴 + Gasket 结构，手指和手腕不容易累。' },
+      { scene: '打游戏', tip: '触发要快', desc: '银轴或短行程线性轴；87 / 75 配列给鼠标让位。' },
+      { scene: '财务 / 数据录入', tip: '数字区不能少', desc: '104 或 98 配列，独立数字区效率高一个量级。' },
+      { scene: '经常外出', tip: '小且能连', desc: '65% / 60% + 三模，重量尽量 500g 以内。' }
+    ],
+    checklist: [
+      '热插拔优先：轴坏了只换一颗，不用整把更换',
+      '看大键（卫星轴）调教：空格晃、闷响是廉价感的主要来源',
+      'PBT 键帽优于 ABS：ABS 手感细腻，但半年就打油发亮',
+      '别为灯效加钱：RGB 是锦上添花，不解决手感',
+      '三模按需：桌面固定用有线最稳，不必为「无线」溢价',
+      '轴体先买试轴器：同一颗轴的感受因人而异，别信排行榜'
+    ]
+  };
+
   return {
     schemes: schemes,
     encodeSyllable: encodeSyllable,
@@ -458,7 +484,8 @@ window.DAZI_CONTENT = (function () {
     strokes: strokes,
     english: english,
     fingering: fingering,
-    keyboardGuide: keyboardGuide
+    keyboardGuide: keyboardGuide,
+    buyingGuide: buyingGuide
   };
 })();
 

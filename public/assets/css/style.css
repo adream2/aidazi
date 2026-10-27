@@ -966,3 +966,131 @@ body.focus-mode #practice .stats-bar .stat b { font-size: clamp(22px, 2vw, 30px)
   body.focus-mode #practice .stage { min-height: 160px; padding: 18px 22px 14px; }
   #practice:fullscreen .kb-key { height: 42px; }
 }
+
+/* ============ 广告位（未配置时整块隐藏，不占布局） ============ */
+.ad-slot { margin: 8px 0 4px; }
+.ad-slot[hidden] { display: none !important; }
+.ad-slot:not([hidden]) {
+  max-width: 1000px;
+  margin: 22px auto;
+  padding: 6px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px dashed var(--border);
+  overflow: hidden;
+}
+
+/* ============ 隐私提示 ============ */
+.privacy-note {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--bg-soft);
+  border: 1px dashed var(--border);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.privacy-note[hidden] { display: none; }
+
+/* ============ 键盘选购指南 ============ */
+.buy-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+.buy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 620px;
+}
+.buy-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: .03em;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--bg-soft);
+  white-space: nowrap;
+}
+.buy-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink-2);
+  vertical-align: top;
+  line-height: 1.7;
+}
+.buy-table tr:last-child td { border-bottom: none; }
+.buy-table tr:hover td { background: var(--accent-soft); }
+.buy-range { white-space: nowrap; }
+.buy-range b { color: var(--ink); font-size: 14px; }
+.buy-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--accent-ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  vertical-align: 1px;
+}
+.buy-pick {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--accent-ink) !important;
+  white-space: nowrap;
+}
+
+.buy-scenes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.buy-scene {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: border-color .15s, transform .15s;
+}
+.buy-scene:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.buy-scene b { font-size: 14.5px; color: var(--ink); }
+.buy-scene .buy-tip {
+  display: block;
+  margin: 3px 0 8px;
+  font-size: 12px;
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+}
+.buy-scene p { margin: 0; font-size: 13px; line-height: 1.75; color: var(--muted); }
+
+.buy-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 10px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.buy-checklist li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+.buy-checklist li::before {
+  content: "✕";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+}

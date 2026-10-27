@@ -152,6 +152,7 @@
       <a href="#practice">练习</a>
       <a href="#knowledge">知识库</a>
       <a href="#guide">键盘图鉴</a>
+      <a href="#buying">选购指南</a>
       <a href="#faq">常见问题</a>
     </nav>
     <div class="site-actions">
@@ -221,6 +222,9 @@
       </div>
     </section>
 
+    <!-- 广告位：练习区下方（未配置时整块隐藏） -->
+    <div class="ad-slot" data-ad="inPractice" hidden></div>
+
     <!-- ================= 知识库 ================= -->
     <section id="knowledge" class="section">
       <h2>知识库</h2>
@@ -229,11 +233,21 @@
       <div class="kn-body" id="knBody"></div>
     </section>
 
+    <!-- 广告位：键盘图鉴上方（未配置时整块隐藏） -->
+    <div class="ad-slot" data-ad="beforeGuide" hidden></div>
+
     <!-- ================= 键盘图鉴 ================= -->
     <section id="guide" class="section">
       <h2>键盘图鉴</h2>
       <p class="sec-sub">配列、轴体、键帽、结构、术语——选键盘和聊天都用得上。</p>
       <div id="guideBody"></div>
+    </section>
+
+    <!-- ================= 选购指南 ================= -->
+    <section id="buying" class="section">
+      <h2>键盘选购指南</h2>
+      <p class="sec-sub">按预算和用途挑，不吹参数、不堆名词——先把「该花多少钱」和「该选哪种」定下来。</p>
+      <div id="buyingBody"></div>
     </section>
 
     <!-- ================= 关于 ================= -->
@@ -251,6 +265,11 @@
           <li><b>数据记录</b>成绩存浏览器本地，不上传</li>
           <li><b>使用成本</b>免费，无需注册与安装</li>
         </ul>
+        <p class="privacy-note" data-privacy-note hidden>
+          本站可能使用第三方统计与广告服务（如 Google Analytics、Bing、百度统计、Google AdSense），
+          它们会在你的浏览器中写入 Cookie 以统计访问量并展示相关广告；练习内容与成绩不会上传。
+          你可以通过浏览器设置或广告拦截插件拒绝 Cookie，站点核心功能不受影响。
+        </p>
       </div>
     </section>
 
@@ -300,6 +319,8 @@
     <p>爱打字 · 把打字练成肌肉记忆</p>
   </footer>
 
+  <script src="assets/js/site-config.js"></script>
+  <script src="assets/js/integrations.js"></script>
   <script src="assets/js/data/core-data.js"></script>
   <script src="assets/js/data/content.js"></script>
   <script src="assets/js/engine.js"></script>
@@ -308,5 +329,13 @@
   <script src="assets/js/modes.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/knowledge-view.js"></script>
+  <script>
+    // PWA：注册 Service Worker（HTTPS 或 localhost 生效，失败不影响站点）
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () { /* 忽略：隐私模式等场景 */ });
+      });
+    }
+  </script>
 </body>
 </html>

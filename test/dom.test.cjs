@@ -196,6 +196,64 @@ async function t(name, fn) {
     const org = ld['@graph'].find((g) => g['@type'] === 'Organization');
     assert.ok(org.logo && org.logo.indexOf('icon-512.png') >= 0, 'Organization 应有 logo');
   });
+  await t('PWA：Service Worker / manifest / 注册代码就绪', () => {
+    const fs2 = require('node:fs');
+    const path2 = require('node:path');
+    const pub = path2.join(__dirname, '..', 'public');
+    // sw.js 存在且包含预缓存与 fetch 处理
+    const sw = fs2.readFileSync(path2.join(pub, 'sw.js'), 'utf8');
+    assert.ok(/addAll|PRECACHE/.test(sw), 'Service Worker 应有预缓存');
+    assert.ok(/addEventListener\('fetch'/.test(sw), 'Service Worker 应处理 fetch');
+    assert.ok(/skipWaiting|clients\.claim/.test(sw), 'Service Worker 应能接管');
+    // manifest 关键字段
+    const mf = JSON.parse(fs2.readFileSync(path2.join(pub, 'site.webmanifest'), 'utf8'));
+    ['id', 'start_url', 'scope', 'display', 'theme_color', 'background_color', 'icons'].forEach((k) => {
+      assert.ok(mf[k] !== undefined, 'manifest 缺少 ' + k);
+    });
+    assert.strictEqual(mf.display, 'standalone');
+    assert.ok(mf.shortcuts && mf.shortcuts.length >= 2, 'manifest 应有快捷方式');
+    assert.ok(mf.icons.some((i) => i.purpose === 'maskable'), '应有 maskable 图标');
+    // 首页注册 SW
+    const html = fs2.readFileSync(path2.join(pub, 'index.html'), 'utf8');
+    assert.ok(/serviceWorker[\s\S]{0,120}register\('sw\.js'\)/.test(html), '首页应注册 sw.js');
+  });
+
+  await t('统计/广告接入：默认全空即零请求，填写后按需注入', () => {
+    const fs2 = require('node:fs');
+    const path2 = require('node:path');
+    const pub = path2.join(__dirname, '..', 'public');
+    // 默认配置全空
+    const cfgSrc = fs2.readFileSync(path2.join(pub, 'assets/js/site-config.js'), 'utf8');
+    const cfg = (() => {
+      const sandbox = { window: {} };
+      new Function('window', cfgSrc.replace(/^window\.DAZI_CONFIG/m, 'window.DAZI_CONFIG'))(sandbox.window);
+      return sandbox.window.DAZI_CONFIG;
+    })();
+    Object.values(cfg.analytics).forEach((v) => assert.strictEqual(v, '', '默认统计 ID 应为空'));
+    assert.strictEqual(cfg.adsense.client, '', '默认广告 client 应为空');
+    // 页面里广告位默认 hidden，且 integrations 在未配置时不注入第三方脚本
+    document.querySelectorAll('.ad-slot').forEach((n) => {
+      assert.strictEqual(n.hidden, true, '广告位默认隐藏');
+    });
+    const third = [...document.querySelectorAll('script[src]')]
+      .map((s) => s.src)
+      .filter((u) => /googletagmanager|bat\.bing|hm\.baidu|cloudflareinsights|googlesyndication/.test(u));
+    assert.deepStrictEqual(third, [], '未配置时不应加载任何统计/广告脚本');
+    // 广告位容器已就位
+    assert.ok(document.querySelector('[data-ad="inPractice"]'), '应有练习区广告位');
+    assert.ok(document.querySelector('[data-ad="beforeGuide"]'), '应有图鉴广告位');
+  });
+
+  await t('键盘选购指南：预算表、场景、避坑清单齐备', () => {
+    const sec = document.getElementById('buying');
+    assert.ok(sec, '应有选购指南区块');
+    const body = document.getElementById('buyingBody');
+    assert.ok(body.querySelectorAll('.buy-table tbody tr').length >= 4, '预算表至少 4 档');
+    assert.ok(body.querySelectorAll('.buy-scene').length >= 5, '场景卡片至少 5 个');
+    assert.ok(body.querySelectorAll('.buy-checklist li').length >= 6, '避坑清单至少 6 条');
+    assert.ok(sec.textContent.indexOf('热插拔') >= 0, '应提到热插拔');
+  });
+
   await t('SEO 文件：robots / sitemap / llms.txt 存在且有效', () => {
     const fs2 = require('node:fs');
     const path2 = require('node:path');

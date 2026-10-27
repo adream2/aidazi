@@ -409,9 +409,52 @@
     wrap.appendChild(care);
   }
 
+  /* ==================== 键盘选购指南 ==================== */
+  function renderBuying() {
+    var wrap = $('buyingBody');
+    var g = C.buyingGuide;
+    if (!wrap || !g) return;
+    wrap.innerHTML = '';
+
+    // 预算档位
+    var s1 = el('section', 'guide-sec');
+    s1.appendChild(el('h3', null, '先定预算'));
+    var tableWrap = el('div', 'buy-table-wrap');
+    var rows = g.budgets.map(function (b) {
+      return '<tr><td class="buy-range"><b>' + esc(b.range) + '</b><span class="buy-tag">' + esc(b.tag) + '</span></td>' +
+        '<td>' + esc(b.desc) + '</td><td class="buy-pick">' + esc(b.pick) + '</td></tr>';
+    }).join('');
+    tableWrap.innerHTML = '<table class="buy-table"><thead><tr><th>预算</th><th>能买到什么</th><th>建议配置</th></tr></thead><tbody>' +
+      rows + '</tbody></table>';
+    s1.appendChild(tableWrap);
+    wrap.appendChild(s1);
+
+    // 场景
+    var s2 = el('section', 'guide-sec');
+    s2.appendChild(el('h3', null, '按用途挑'));
+    var grid = el('div', 'buy-scenes');
+    g.scenes.forEach(function (it) {
+      var card = el('div', 'buy-scene');
+      card.innerHTML = '<b>' + esc(it.scene) + '</b><span class="buy-tip">' + esc(it.tip) + '</span>' +
+        '<p>' + esc(it.desc) + '</p>';
+      grid.appendChild(card);
+    });
+    s2.appendChild(grid);
+    wrap.appendChild(s2);
+
+    // 避坑
+    var s3 = el('section', 'guide-sec');
+    s3.appendChild(el('h3', null, '避坑清单'));
+    var ul = el('ul', 'buy-checklist');
+    g.checklist.forEach(function (t) { ul.appendChild(el('li', null, esc(t))); });
+    s3.appendChild(ul);
+    wrap.appendChild(s3);
+  }
+
   function init() {
     renderKnowledge();
     renderGuide();
+    renderBuying();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

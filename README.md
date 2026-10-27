@@ -23,6 +23,8 @@
 - 键盘图鉴：8 种配列（100%/96%/TKL/75%/65%/60%/40%/分体）、轴体、键帽、结构、术语、保养，**每类均配自绘 SVG 图**
   - 配列俯视图按 1u = 19.05mm 标准键位单位等比绘制，键位与字符完整（100% 严格 104 键），并用虚线框标出 F 区 / 主键区 / 导航区 / 方向键 / 数字区 / 编辑键列
   - MX 轴体剖面（真实比例 + 逐件标注 + 总行程/触发行程）、键帽高度剖面、船壳与 Gasket 结构剖面对比、触发压力-行程曲线
+- **PWA**：可安装到桌面/主屏，Service Worker 预缓存核心资源，断网也能打开（离线使用）
+- 键盘选购指南：按预算档位、使用场景给建议，附避坑清单
 - 浅色「纸墨」主题 + 深色模式，中文优先排版
 - 编码数据全部来自公开码表并由脚本可复现生成（见下文）
 - SEO / GEO 已就绪：结构化数据（WebSite + WebApplication + Organization + FAQPage）、Open Graph / Twitter Card、canonical、robots.txt、sitemap.xml、llms.txt，页面含「关于」事实清单与「常见问题」区块
@@ -155,6 +157,38 @@ node test/dom.test.cjs       # jsdom 全流程冒烟（12 项，需 npm install�
 | FAQ（可见内容与 JSON-LD 一一对应） | 页面 `#faq` 区块 |
 
 **换域名时改这三处**：`index.html` 的 canonical / og:url / og:image / twitter:image / JSON-LD 里的 `@id` 与 `url`、`robots.txt` 与 `sitemap.xml` 里的域名、`llms.txt` 里的地址。测试会校验这些要素存在（`npm test` 中的 SEO/GEO 分组）。
+
+## 统计与广告（可配置）
+
+第三方接入全部由 `public/assets/js/site-config.js` 控制，**默认全部为空 → 一个第三方请求都不发**。填上 ID 保存、重新部署即生效，不需要构建：
+
+```js
+window.DAZI_CONFIG = {
+  analytics: {
+    googleAnalyticsId: '',  // GA4：G-XXXXXXXXXX
+    bingUetTagId: '',       // Bing UET：纯数字
+    baiduTongjiId: '',      // 百度统计：hm.js?id= 后面那串
+    cloudflareToken: ''     // Cloudflare Web Analytics token
+  },
+  adsense: {
+    client: '',             // ca-pub-XXXXXXXXXXXXXXXX
+    slots: { inPractice: '', beforeGuide: '' }  // AdSense 广告单元 ID
+  },
+  showPrivacyNote: false    // 是否显示页内隐私说明
+};
+```
+
+- 注入逻辑在 `assets/js/integrations.js`：只对**已填写**的服务插入脚本；广告位在未配置时整块 `hidden`，不占布局。
+- 两个广告位：练习区下方（`inPractice`）、键盘图鉴上方（`beforeGuide`）。
+- 开启统计或广告后，把 `showPrivacyNote` 设为 `true`（或任意 ID 已填时自动）会在「关于」里显示隐私说明，AdSense 审核通常需要这段。
+- 纯前端注入，不依赖 Worker 脚本，Cloudflare Workers / Pages / 任意静态托管通用。
+
+## PWA
+
+- `public/sw.js`：安装时预缓存核心资源（HTML/CSS/JS/图标），导航请求网络优先、断网回退缓存，静态资源 stale-while-revalidate。
+- `public/site.webmanifest`：`standalone` 显示模式、主题色、192/512 图标（含 maskable）、三条快捷方式。
+- 首页在 `load` 后注册 `sw.js`；HTTPS 或 localhost 生效，注册失败不影响站点。
+- 改了核心资源想强制刷新缓存时，把 `sw.js` 里的 `VERSION` 加一。
 
 ## 已知边界
 
