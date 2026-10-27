@@ -167,6 +167,35 @@ async function t(name, fn) {
     const zt = document.querySelectorAll('a[href="https://www.ztsite.com"]');
     assert.ok(zt.length >= 2, '头部与页脚都应有主站入口');
   });
+  await t('站点图标：SVG/ICO/PWA 文件齐备且被正确引用', () => {
+    const fs2 = require('node:fs');
+    const path2 = require('node:path');
+    const pub = path2.join(__dirname, '..', 'public');
+    ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'site.webmanifest']
+      .forEach((f) => {
+        const fp = path2.join(pub, f);
+        assert.ok(fs2.existsSync(fp), '缺少图标文件: ' + f);
+        assert.ok(fs2.statSync(fp).size > 100, f + ' 文件为空');
+      });
+    // ICO 头校验：type=1(icon)，含多尺寸
+    const ico = fs2.readFileSync(path2.join(pub, 'favicon.ico'));
+    assert.strictEqual(ico.readUInt16LE(2), 1, 'favicon.ico 类型应为 icon');
+    assert.ok(ico.readUInt16LE(4) >= 3, 'favicon.ico 应含多个尺寸');
+    // HTML 引用
+    assert.ok(document.querySelector('link[rel="icon"][href="favicon.svg"]'), '应引用 SVG 图标');
+    assert.ok(document.querySelector('link[rel="icon"][href="favicon.ico"]'), '应引用 ICO 图标');
+    assert.ok(document.querySelector('link[rel="apple-touch-icon"]'), '应有 apple-touch-icon');
+    assert.ok(document.querySelector('link[rel="manifest"]'), '应引用 manifest');
+    // manifest 内容
+    const mf = JSON.parse(fs2.readFileSync(path2.join(pub, 'site.webmanifest'), 'utf8'));
+    assert.strictEqual(mf.name.indexOf('爱打字'), 0);
+    assert.ok(mf.icons.length >= 3, 'manifest 图标数量不足');
+    mf.icons.forEach((i) => assert.ok(fs2.existsSync(path2.join(pub, i.src)), 'manifest 图标缺失: ' + i.src));
+    // JSON-LD 里的 logo
+    const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);
+    const org = ld['@graph'].find((g) => g['@type'] === 'Organization');
+    assert.ok(org.logo && org.logo.indexOf('icon-512.png') >= 0, 'Organization 应有 logo');
+  });
   await t('SEO 文件：robots / sitemap / llms.txt 存在且有效', () => {
     const fs2 = require('node:fs');
     const path2 = require('node:path');

@@ -11,7 +11,8 @@
   <meta name="keywords" content="打字练习,在线打字,打字速度测试,五笔练习,五笔86字根口诀,双拼练习,小鹤双拼,微软双拼,搜狗双拼,智能ABC双拼,自然码双拼,拼音打字,笔画输入法,键盘图鉴,机械键盘配列">
   <meta name="author" content="ZT折腾簿">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
-  <meta name="theme-color" content="#faf9f7">
+  <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1a1916" media="(prefers-color-scheme: dark)">
   <link rel="canonical" href="https://aidazi.lxzt.fun/">
 
   <!-- Open Graph -->
@@ -32,7 +33,11 @@
   <meta name="twitter:description" content="五种输入法模式的免费在线打字练习，附字根口诀、双拼键位对照与键盘图鉴。">
   <meta name="twitter:image" content="https://aidazi.lxzt.fun/assets/og-cover.png">
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23b4433a'/><text x='50' y='70' font-size='54' text-anchor='middle' fill='white' font-family='serif'>爱</text></svg>">
+  <!-- 站点图标：SVG（现代浏览器）+ ICO（老浏览器/抓取器）+ iOS/PWA -->
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="stylesheet" href="assets/css/style.css">
 
   <!-- 结构化数据：WebSite + WebApplication + FAQPage（与页面可见内容一致） -->
@@ -60,6 +65,7 @@
         "browserRequirements": "支持 ES5 的现代浏览器",
         "inLanguage": "zh-CN",
         "isAccessibleForFree": true,
+        "image": "https://aidazi.lxzt.fun/assets/og-cover.png",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
         "featureList": [
           "英文打字练习（单词 / 名言 / 代码，显示 WPM）",
@@ -78,6 +84,7 @@
         "@id": "https://aidazi.lxzt.fun/#author",
         "name": "ZT折腾簿",
         "url": "https://www.ztsite.com",
+        "logo": "https://aidazi.lxzt.fun/icon-512.png",
         "sameAs": ["https://www.ztsite.com", "https://github.com/adream2"]
       },
       {

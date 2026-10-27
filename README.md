@@ -88,6 +88,7 @@ docker run -d -p 8080:80 ai-da-zi
 │           └── knowledge-view.js   # 知识库/图鉴/部署渲染
 ├── scripts/
 │   ├── gen-data.mjs           # 数据生成脚本（公开码表 → core-data.js）
+│   ├── gen-icons.mjs          # 图标生成（favicon.svg → ICO / PNG / PWA）
 │   └── serve.mjs              # 零依赖本地静态服务器
 ├── test/                      # 26 项引擎测试 + 10 项 DOM 冒烟测试
 ├── wrangler.toml              # Cloudflare Workers 配置
@@ -115,6 +116,17 @@ node scripts/gen-data.mjs <vvk数据文件> <dict_86.js> <encode1.js> [encode2.j
 
 双拼五套方案的键位映射经 flypy.cc 官方文档与各方案公开键位表核对（`content.js` 内有逐方案口诀与规则说明）。
 
+## 图标
+
+站点图标是一枚「键帽 + 光标」的印章：`public/favicon.svg` 是唯一源文件（朱砂红 `#b4433a` 圆角底 + 白色键帽 + 红色光标 + 底排小键），其余尺寸都由它生成：
+
+```bash
+npm i -D sharp        # 一次性依赖
+npm run gen:icons     # 产出 favicon.ico(16/32/48)、apple-touch-icon.png(180)、icon-192/512.png
+```
+
+改图标只需改 `favicon.svg` 后重跑上面的命令。HTML 里同时声明了 `favicon.ico`、`favicon.svg`、`apple-touch-icon` 与 `site.webmanifest`，覆盖浏览器标签页、iOS 主屏与 PWA 安装；结构化数据里的 `Organization.logo` 指向 `icon-512.png`。
+
 ## 测试
 
 ```bash
@@ -135,6 +147,7 @@ node test/dom.test.cjs       # jsdom 全流程冒烟（12 项，需 npm install�
 | canonical、Open Graph、Twitter Card | `public/index.html` `<head>` |
 | 结构化数据（WebSite / WebApplication / Organization / FAQPage） | `public/index.html` 内联 JSON-LD |
 | 社交分享封面（1200×630） | `public/assets/og-cover.png` |
+| 站点图标 | `public/favicon.svg`（源文件）/ `favicon.ico` / `apple-touch-icon.png` / `icon-192,512.png` / `site.webmanifest` |
 | 爬虫规则 | `public/robots.txt` |
 | 站点地图 | `public/sitemap.xml` |
 | AI 引擎说明（GEO） | `public/llms.txt` |
