@@ -196,6 +196,22 @@ async function t(name, fn) {
     const org = ld['@graph'].find((g) => g['@type'] === 'Organization');
     assert.ok(org.logo && org.logo.indexOf('icon-512.png') >= 0, 'Organization 应有 logo');
   });
+  await t('拼音读音标注跟随「显示提示」开关', () => {
+    click(document.querySelectorAll('#modeTabs .mode-tab')[1]); // 拼音
+    const hint = $('hintCheck');
+    // 默认开启：应有读音标注
+    hint.checked = true;
+    hint.dispatchEvent(new window.Event('change', { bubbles: true }));
+    assert.ok(document.querySelector('.p-cur .p-py'), '提示开启时应显示拼音标注');
+    // 关闭：标注消失，且音节芯片显示占位
+    hint.checked = false;
+    hint.dispatchEvent(new window.Event('change', { bubbles: true }));
+    assert.strictEqual(document.querySelector('.p-cur .p-py'), null, '提示关闭时不应显示拼音标注');
+    assert.ok([...document.querySelectorAll('#pSyls .p-syl')].every((c) => c.textContent === '••'), '芯片应显示占位');
+    hint.checked = true;
+    hint.dispatchEvent(new window.Event('change', { bubbles: true }));
+  });
+
   await t('PWA：Service Worker / manifest / 注册代码就绪', () => {
     const fs2 = require('node:fs');
     const path2 = require('node:path');

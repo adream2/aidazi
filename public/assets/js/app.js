@@ -222,8 +222,9 @@
     var html = '';
     s.committed.forEach(function (w) { html += '<span class="p-done">' + esc(w) + '</span>'; });
     if (p) {
+      // 拼音标注跟随「显示提示」：关闭后界面只留汉字，不出现拼音字母
       html += '<span class="p-cur" data-w="' + esc(p.w) + '">' + esc(p.w) +
-        '<span class="p-py">' + esc(p.syl.join(' ')) + '</span></span>';
+        (state.hint ? '<span class="p-py">' + esc(p.syl.join(' ')) + '</span>' : '') + '</span>';
     }
     html += '<span class="p-input"><span class="p-buffer">' + esc(s.buffer) + '</span><span class="p-caret"></span></span>';
     box.innerHTML = html;
