@@ -361,6 +361,8 @@ async function t(name, fn) {
   console.log('\n[DOM] 英文模式完整输入');
   await t('切到英文，按目标词敲完一组', async () => {
     click(document.querySelectorAll('#modeTabs .mode-tab')[0]); // 英文
+    assert.strictEqual($('textLine').style.display, '', '英文模式下文本行应显示');
+    assert.strictEqual($('pinyinBox').style.display, 'none', '英文模式下拼音区应隐藏');
     // 依次敲完所有单元（从 DOM 读目标词）
     for (let guard = 0; guard < 400; guard++) {
       const active = document.querySelector('#textLine .unit.active');

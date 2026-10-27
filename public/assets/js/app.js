@@ -183,10 +183,12 @@
     var m = M.modes[state.modeId];
     var isPy = m.kind === 'pinyin';
     $('pinyinBox').style.display = isPy ? '' : 'none';
+    $('textLine').style.display = isPy ? 'none' : '';   // 拼音模式下隐藏直打文本行，防止英文残留
     $('pSyls').style.display = isPy ? '' : 'none';
     $('kbWrap').style.display = ''; // 键盘始终可见（英文模式也高亮下一键）
     $('startHint').style.display = s.stats.startedAt ? 'none' : '';
-    if (isPy) renderPinyin(); else renderDirect();
+    if (isPy) { renderPinyin(); $('textLine').innerHTML = ''; }
+    else { renderDirect(); $('pinyinBox').innerHTML = ''; $('pSyls').innerHTML = ''; }
     updateKeyboard();
   }
 

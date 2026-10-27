@@ -75,7 +75,23 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // 静态资源：缓存优先 + 后台更新
+  // JS/CSS/manifest：网络优先（修复与更新第一时间生效），断网回退缓存
+  if (/\.(js|css|webmanifest|json)(\?|$)/.test(url.pathname)) {
+    e.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.status === 200) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+          }
+          return res;
+        })
+        .catch(() => caches.match(req).then((hit) => hit || Response.error()))
+    );
+    return;
+  }
+
+  // 图片等不变资源：缓存优先 + 后台更新
   e.respondWith(
     caches.match(req).then((hit) => {
       const network = fetch(req)
