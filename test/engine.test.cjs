@@ -90,6 +90,29 @@ t('词未输完时选字判错', () => {
   assert.strictEqual(r.ok, false);
   assert.match(r.reason, /请先输完/);
 });
+t('全量校验：每个单字/词目标必出现在其拼音的候选中', () => {
+  const fails = [];
+  (C.singleChars || []).forEach((ch) => {
+    const raw = M.wordSyllables(ch);
+    const syl = Array.isArray(raw) ? raw : [raw];
+    if (!syl[0]) return;
+    const units = [{ w: ch, syl: syl }];
+    const sess = E.createPinyinSession(units, M.pinyinDictFor(units));
+    syl.join('').split('').forEach((c) => sess.letter(c));
+    if (sess.candidates.indexOf(ch) < 0) fails.push(ch + '(' + syl.join('') + ')');
+  });
+  assert.deepStrictEqual(fails, [], '以下目标无法在候选中找到: ' + fails.join(','));
+  Object.keys(C.pinyinWords).forEach((w) => {
+    const syl = C.pinyinWords[w];
+    const sess = E.createPinyinSession([{ w, syl }], M.pinyinDictFor([{ w, syl }]));
+    syl.join('').split('').forEach((c) => sess.letter(c));
+    assert.ok(sess.candidates.indexOf(w) >= 0, '词「' + w + '」无法在候选中找到');
+  });
+});
+t('目标候选置顶：pinyinDictFor 强制目标排在同音首位', () => {
+  const d = M.pinyinDictFor([{ w: '旧', syl: ['jiu'] }]);
+  assert.strictEqual(d['jiu'][0], '旧');
+});
 t('单字目标不被联想词挤出候选（词+单字难度回归）', () => {
   [['一','yi'],['下','xia'],['系','xi'],['时','shi']].forEach(([ch, py]) => {
     const units = [{ w: ch, syl: [py] }];

@@ -229,7 +229,10 @@
       if (!p || !p.syl || !p.syl.length) return;
       var key = p.syl.join('');
       dict[key] = dict[key] || [];
-      if (dict[key].indexOf(p.w) < 0) dict[key].unshift(p.w);
+      var arr = dict[key];
+      var at = arr.indexOf(p.w);
+      if (at < 0) arr.unshift(p.w);
+      else if (at > 0) { arr.splice(at, 1); arr.unshift(p.w); }  // 已存在也强制置顶，保证目标必被选中
     });
     return dict;
   }
