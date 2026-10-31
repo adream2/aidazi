@@ -90,9 +90,10 @@ docker run -d -p 8080:80 ai-da-zi
 │           └── knowledge-view.js   # 知识库/图鉴/部署渲染
 ├── scripts/
 │   ├── gen-data.mjs           # 数据生成脚本（公开码表 → core-data.js）
+│   ├── gen-head.mjs           # 头部注入生成（site-config.js 的 head 段 → index.html）
 │   ├── gen-icons.mjs          # 图标生成（favicon.svg → ICO / PNG / PWA）
 │   └── serve.mjs              # 零依赖本地静态服务器
-├── test/                      # 26 项引擎测试 + 10 项 DOM 冒烟测试
+├── test/                      # 31 项引擎测试 + 28 项 DOM 冒烟测试
 ├── wrangler.toml              # Cloudflare Workers 配置
 ├── Dockerfile / docker-compose.yml / nginx.conf
 ├── package.json
@@ -182,6 +183,35 @@ window.DAZI_CONFIG = {
 - 两个广告位：练习区下方（`inPractice`）、键盘图鉴上方（`beforeGuide`）。
 - 开启统计或广告后，把 `showPrivacyNote` 设为 `true`（或任意 ID 已填时自动）会在「关于」里显示隐私说明，AdSense 审核通常需要这段。
 - 纯前端注入，不依赖 Worker 脚本，Cloudflare Workers / Pages / 任意静态托管通用。
+
+## 头部代码注入（搜索引擎验证）
+
+搜索引擎的站点验证爬虫**不执行 JavaScript**，靠 `integrations.js` 在浏览器里动态插 `<meta>` 是抓不到的。所以验证标签必须静态出现在 `index.html` 源码里，由脚本生成：
+
+1. 在 `public/assets/js/site-config.js` 的 `head.verification` 里填验证码：
+
+```js
+head: {
+  verification: {
+    google: '',     // Google Search Console → google-site-verification
+    bing: '',       // Bing Webmaster Tools → msvalidate.01
+    baidu: '',      // 百度搜索资源平台 → baidu-site-verification
+    qihu360: '',    // 360 搜索 → 360-site-verification
+    sogou: '',      // 搜狗站长平台 → sogou_site_verification
+    yandex: '',     // Yandex Webmaster → yandex-verification
+    googleAds: ''   // AdSense 账号 → google-adsense-account（ca-pub-…）
+  },
+  customHtml: ''    // 任意 head 片段，原样写入（preconnect、第三方校验脚本等）
+}
+```
+
+2. 运行 `npm run gen:head`，脚本把配置写进 `index.html` 的 `head-inject` 标记区，提交即可生效。
+
+- **只改 `site-config.js`，不要手改注入区**——标记之间的内容每次生成都会被覆盖。
+- `npm run deploy` 会自动先跑 `gen:head`；`npm test` 会带 `--check` 校验 HTML 与配置是否一致，不一致直接失败。
+- `customHtml` 里不能出现 `<!--` / `-->` 或 `head-inject` 标记，否则会破坏注入区边界（脚本会报错拦下）。
+- 如果平台只给 HTML 文件验证（如 Google 的 `googleXXXX.html`、IndexNow 的 key 文件），直接把文件放进 `public/` 根目录即可，部署后访问得到就通过。
+- 留空即什么都不注入，`index.html` 里保持一个空块，零额外请求。
 
 ## PWA
 

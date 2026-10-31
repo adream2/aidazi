@@ -40,6 +40,12 @@
   <link rel="manifest" href="site.webmanifest">
   <link rel="stylesheet" href="assets/css/style.css">
 
+  <!-- 头部代码注入区：由 scripts/gen-head.mjs 依据 site-config.js 的 head 段生成
+       搜索引擎验证 meta 必须静态出现在 HTML 里（爬虫不执行 JS），改完配置运行 npm run gen:head
+       本区块内部请勿手改，会被覆盖 -->
+  <!-- head-inject:start -->
+  <!-- head-inject:end -->
+
   <!-- 结构化数据：WebSite + WebApplication + FAQPage（与页面可见内容一致） -->
   <script type="application/ld+json">
   {

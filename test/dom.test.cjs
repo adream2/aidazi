@@ -260,6 +260,30 @@ async function t(name, fn) {
     assert.ok(document.querySelector('[data-ad="beforeGuide"]'), '应有图鉴广告位');
   });
 
+  await t('头部注入：标记区与验证配置就位（爬虫不执行 JS，必须静态写入）', () => {
+    const fs2 = require('node:fs');
+    const path2 = require('node:path');
+    const root = path2.join(__dirname, '..');
+    const raw = fs2.readFileSync(path2.join(root, 'public/index.html'), 'utf8');
+    // 注入区标记必须成对存在，且位于 head 内
+    const i = raw.indexOf('<!-- head-inject:start -->');
+    const j = raw.indexOf('<!-- head-inject:end -->');
+    assert.ok(i > 0 && j > i, 'index.html 应有成对的 head-inject 标记');
+    assert.ok(i < raw.indexOf('</head>'), '注入区应在 head 内');
+    // 配置结构：验证键齐备
+    const cfgSrc2 = fs2.readFileSync(path2.join(root, 'public/assets/js/site-config.js'), 'utf8');
+    const sb = { window: {} };
+    new Function('window', cfgSrc2)(sb.window);
+    const head = sb.window.DAZI_CONFIG.head;
+    assert.ok(head && head.verification, 'site-config 应有 head.verification');
+    assert.strictEqual(typeof head.customHtml, 'string', 'site-config 应有 head.customHtml');
+    ['google', 'bing', 'baidu', 'qihu360', 'sogou', 'yandex', 'googleAds'].forEach((k) => {
+      assert.strictEqual(typeof head.verification[k], 'string', '缺少验证配置键: ' + k);
+    });
+    // 生成脚本就位
+    assert.ok(fs2.existsSync(path2.join(root, 'scripts/gen-head.mjs')), '应有 scripts/gen-head.mjs');
+  });
+
   await t('键盘选购指南：预算表、场景、避坑清单齐备', () => {
     const sec = document.getElementById('buying');
     assert.ok(sec, '应有选购指南区块');

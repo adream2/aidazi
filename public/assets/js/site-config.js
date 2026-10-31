@@ -30,6 +30,27 @@ window.DAZI_CONFIG = {
     }
   },
 
+  /* ---------- 头部注入 ----------
+   * 搜索引擎的站点验证爬虫不执行 JavaScript，靠 JS 动态插 meta 抓不到，
+   * 所以这里的配置由 `npm run gen:head` 静态写进 public/index.html。
+   * 流程：填好验证码 → npm run gen:head → 提交/部署。
+   */
+  head: {
+    // 站点验证 meta：填入各平台后台给出的 content 值，留空则忽略
+    verification: {
+      google: '',      // Google Search Console → google-site-verification
+      bing: '',        // Bing Webmaster Tools → msvalidate.01
+      baidu: '',       // 百度搜索资源平台 → baidu-site-verification
+      qihu360: '',     // 360 搜索站长平台 → 360-site-verification
+      sogou: '',       // 搜狗站长平台 → sogou_site_verification
+      yandex: '',      // Yandex Webmaster → yandex-verification
+      googleAds: ''    // AdSense 账号验证 → google-adsense-account（ca-pub-…）
+    },
+    // 任意自定义 head 代码，原样写入 index.html（preconnect、第三方校验脚本等）
+    // 注意：不要写 </head> 或 --> ，会破坏注入区
+    customHtml: ''
+  },
+
   /* ---------- 其他 ---------- */
   // 是否显示「本站使用统计/广告」提示（开启统计或广告时建议设为 true）
   showPrivacyNote: false

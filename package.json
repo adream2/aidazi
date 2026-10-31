@@ -15,10 +15,12 @@
   },
   "scripts": {
     "dev": "wrangler dev",
+    "predeploy": "node scripts/gen-head.mjs",
     "deploy": "wrangler deploy",
     "serve": "node scripts/serve.mjs",
     "gen:data": "node scripts/gen-data.mjs",
-    "test": "node test/engine.test.cjs && node test/dom.test.cjs",
+    "gen:head": "node scripts/gen-head.mjs",
+    "test": "node scripts/gen-head.mjs --check && node test/engine.test.cjs && node test/dom.test.cjs",
     "shot": "node scripts/shot.mjs",
     "gen:icons": "node scripts/gen-icons.mjs"
   },
