@@ -202,7 +202,7 @@
       if (z.name === 'F 区') { tx = zx + 2; ty = zy - 3; }
       else if (z.name === '主键区') { tx = zx + 2; ty = zy + zh + 12; }
       else { tx = zx + zw + 5; ty = zy + 12; }
-      zoneSvg += '<rect x="' + tx + '" y="' + (ty - 11) + '" width="' + tw + '" height="15" rx="3" class="kb-zone-tag"/>';
+      zoneSvg += '<rect x="' + tx + '" y="' + (ty - 11) + '" width="' + tw + '" height="15" rx="6" class="kb-zone-tag"/>';
       zoneSvg += label(tx + 4, ty, z.name, 'kb-zone-label');
     });
 
@@ -246,9 +246,9 @@
     parts.push(half(right, halfW + PAD + 20));
     var totalW = halfW * 2 + PAD * 2 + 26;
     var totalH = 5 * U + PAD * 2 + 4;
-    parts.push(label(PAD, totalH - 3, '左手 6 列', 'kb-zone-label'));
-    parts.push(label(halfW + PAD + 20, totalH - 3, '右手 6 列', 'kb-zone-label'));
-    return '<svg class="dg dg-layout" viewBox="0 0 ' + totalW + ' ' + totalH +
+    parts.push(label(PAD, totalH + 15, '左手 6 列', 'dg-label'));
+    parts.push(label(halfW + PAD + 20, totalH + 15, '右手 6 列', 'dg-label'));
+    return '<svg class="dg dg-layout" viewBox="0 0 ' + totalW + ' ' + (totalH + 24) +
       '" role="img" aria-label="分体式键盘布局俯视图">' + parts.join('') + '</svg>';
   }
 

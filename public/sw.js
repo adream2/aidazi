@@ -9,7 +9,7 @@
  *
  * 改动资源后如需强制刷新缓存版本，把 VERSION 加一。
  */
-const VERSION = 'aidazi-v2';
+const VERSION = 'aidazi-v3';
 const CACHE = VERSION;
 
 const PRECACHE = [

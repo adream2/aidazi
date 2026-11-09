@@ -25,7 +25,7 @@
   - MX 轴体剖面（真实比例 + 逐件标注 + 总行程/触发行程）、键帽高度剖面、船壳与 Gasket 结构剖面对比、触发压力-行程曲线
 - **PWA**：可安装到桌面/主屏，Service Worker 预缓存核心资源，断网也能打开（离线使用）
 - 键盘选购指南：按预算档位、使用场景给建议，附避坑清单
-- 浅色「纸墨」主题 + 深色模式，中文优先排版
+- 黏土拟物（claymorphism）视觉：双层柔光阴影 + 圆润块面，浅色「暖陶土」/ 深色「暗夜陶土」双主题，中文优先排版
 - 编码数据全部来自公开码表并由脚本可复现生成（见下文）
 - SEO / GEO 已就绪：结构化数据（WebSite + WebApplication + Organization + FAQPage）、Open Graph / Twitter Card、canonical、robots.txt、sitemap.xml、llms.txt，页面含「关于」事实清单与「常见问题」区块
 
